@@ -1,0 +1,15 @@
+{
+  "name": "groupfindr",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "*",
+    "jade": "*",
+    "morgan": "*",
+    "socket.io": "^1.3.5",
+    "stylus": "*"
+  },
+  "engines": {
+    "node": "0.10.30",
+    "npm": "1.4.x"
+  }
+}
