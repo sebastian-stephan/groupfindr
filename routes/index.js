@@ -3,7 +3,7 @@ exports.index = function(req, res){
 };
 
 exports.chat = function(req, res){
-    res.render('sockettest', { title: 'Sockettest' });
+    res.render('canvas', { title: 'Virtual Room' });
 };
 
 exports.about = function(req, res){

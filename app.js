@@ -6,16 +6,15 @@ var express = require('express')
   , path = require('path')
   , logger = require('morgan')
   , http = require('http')
-  , sockettest = require('./sockettest');
+  , socketserver = require('./server');
 
 // Config express.js
 var app = express();
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/client/views');
 app.set('view engine', 'jade');
 app.use(logger('dev'));
-app.use(require('stylus').middleware(path.join(__dirname, '/public')));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/client/public')));
 if (app.get('env') == 'development') {
 	app.locals.pretty = true;
 }
@@ -23,10 +22,10 @@ if (app.get('env') == 'development') {
 // Main routes
 app.get('/', routes.index);
 app.get('/about', routes.about);
-app.get('/sockettest', routes.chat);
+app.get('/virtualroom', routes.chat);
 
 var server = http.createServer(app);
-sockettest.init(server);
+socketserver.init(server);
 
 // Start server
 server.listen(app.get('port'), function(){
