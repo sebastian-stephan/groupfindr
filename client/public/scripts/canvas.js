@@ -98,6 +98,26 @@ $(function(){
             this.player.setPos(evt.stageX + this.offset.x, evt.stageY + this.offset.y);
         });
 
+        //setup key event handling, to be able to walk with the keys
+        var that = this;
+        $(document).keydown(function(event){
+            var step = 5;
+            switch (event.keyCode){
+                case 37:
+                    that.setPos(that.getPos().x - step, that.getPos().y);
+                    break;
+                case 38:
+                    that.setPos(that.getPos().x, that.getPos().y - step);
+                    break;
+                case 39:
+                    that.setPos(that.getPos().x + step, that.getPos().y);
+                    break;
+                case 40:
+                    that.setPos(that.getPos().x, that.getPos().y + step);
+            }
+        });
+
+
     }
     OwnPlayer.prototype = new Player;
 
@@ -139,6 +159,7 @@ $(function(){
             players[playerID].remove();
         }
     });
+
 
 
     /**
