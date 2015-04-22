@@ -164,7 +164,7 @@ $(function(){
 
     /**
      *  Login Formula clicked: Hide form, show canvas and create new game object.
-     *  */
+     */
     $('#joinform').submit(function(e) {
         e.preventDefault();
         var param = {};
