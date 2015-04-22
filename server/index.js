@@ -55,6 +55,12 @@ app.init = function(server) {
 
         });
 
+        /* when a chat arrives */
+        socket.on('chatmessage', function(message){
+            //TODO: Implement message distribution
+        });
+
+
     });
 }
 

@@ -1,5 +1,5 @@
 $(function(){
-    var socket = io();
+    var socket = io();  // empty argument --> takes ip of serving http server as default, MAGIC!!
     var ownPlayer;      // Holds the own players player object
     var players = {};   // Contains all player objects (incl. own)
 
@@ -173,8 +173,9 @@ $(function(){
         param.x = 300;  // Spawn position
         param.y = 300;
         socket.emit('login', param );
-        $('#joinform').hide( "fade", function() {
+        $('#joinform').hide( "fade", function() { //hide login form and show canvas and sidepanels
             $('#mycanvas').fadeIn(200);
+            $('.row').fadeIn(200);
             ownPlayer = new OwnPlayer(socket.id, param.x, param.y, param.username, 'red');
             players[ownPlayer.id] = ownPlayer; // Save game object in global map of player objects.
         } );
