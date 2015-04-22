@@ -1,7 +1,7 @@
 # Groupfindr
 
 Prototype of an application that facilitates forming groups in an interactive manner.
-Beni Test Commit2
+Beni Test Commit23
 
 
 ## Prepare
