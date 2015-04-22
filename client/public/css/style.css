@@ -1,6 +1,6 @@
 #mycanvas {
-  display: none;
-  background-color: #f0ad4e;
+    display: none;
+    background-color: #f0ad4e;
 }
 
 .row {
@@ -8,9 +8,12 @@
 }
 
 ul.chat {
-    width: 350px;
+    width: 290px;
     height: 500px;
-    overflow:hidden;
     overflow-y:scroll;
     list-style-type: none;
+}
+
+.col-md-3 {
+    overflow: hidden;
 }

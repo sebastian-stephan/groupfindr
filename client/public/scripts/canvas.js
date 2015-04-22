@@ -171,6 +171,7 @@ $(function(){
             players[newPos.id].moveTo(newPos.x, newPos.y);
         } else {
             players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username);
+            announceArrival(newPos.username);
         }
 
     });
@@ -181,10 +182,24 @@ $(function(){
      */
     socket.on('remove', function(playerID) {
         if (players[playerID]) {
+            var player = players[playerID];
+            announceLeave(player.username);
             players[playerID].remove();
         }
     });
 
+    var announceArrival = function(username){
+        $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">'+username+ ' entered the room! </li>');
+        $('li').last().focus();
+        $('#chatinput').focus();
+
+    }
+
+    var announceLeave = function(username){
+        $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">'+username+ ' left the room! </li>');
+        $('li').last().focus();
+        $('#chatinput').focus();
+    }
 
     //Chat logic
 
