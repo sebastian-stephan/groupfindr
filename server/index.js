@@ -32,9 +32,9 @@ app.init = function(server) {
             // Send this new player's position to everyone
             var newPos = {id: socket.id, username:socket.username, x:socket.x, y:socket.y };
             app.io.to(data.room).emit('update', newPos);
-
             // Send back information about all other players
             var room = app.io.nsps['/'].adapter.rooms[data.room];
+
             for (var socketId in room) {
                 var usr = that.io.sockets.connected[socketId];
                 var pos = {id: usr.id, username:usr.username, x:usr.x, y:usr.y };
@@ -73,7 +73,12 @@ app.init = function(server) {
 
         /* when a chat arrives */
         socket.on('chatmessage', function(message){
-            //TODO: Implement message distribution
+            for (index = 0, len = socket.rooms.length; index < len; ++index) {
+                var room = socket.rooms[index];
+                if (!(room === socket.id)) {
+                    app.io.to(room).emit('chatmessage', message);
+                }
+            }
         });
 
 
