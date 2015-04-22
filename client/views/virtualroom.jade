@@ -12,10 +12,17 @@ block content
                     .controls
                         input#username.input-xlarge(name='username', type='text', placeholder='Enter username', required='')
                 // Room name
-                .control-group
+                //.control-group
                     label.control-label(for='room') Room
                     .controls
                         input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='')
+                // Room name advanced
+                .control-group
+                    label.control-label(for='room') Room
+                    .controls
+                        input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='', list="rooms")
+                        datalist#rooms
+
                 // Join Button
                 .control-group
                     label.control-label(for='joinbutton')
@@ -27,3 +34,4 @@ block content
 
         script(src='//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js')
         script(src='/scripts/canvas.js')
+        script(src='/scripts/virtualroom.js')
