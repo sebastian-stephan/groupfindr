@@ -18,11 +18,26 @@ $(function(){
     // expensive screen updates.
     createjs.Ticker.addEventListener("tick", function(event) {
         if (update) {
-            update = false; // Only update once
+            //update = false; // Only update once
             stage.update(event);
         }
     });
 
+    // Define sprite sheet for player figure, with all animations
+    var playerSpriteSheet = new createjs.SpriteSheet({
+        images: ["images/player.png"],
+        frames: { width: 32, height: 50, regX: 16, regY: 25, count: 16 },
+        animations: {
+            "standdown": 0,
+            "standleft": 4,
+            "standright": 8,
+            "standup": 12,
+            "down": [1, 3, "standdown", 0.4],
+            "left": [5, 7, "standleft", 0.4],
+            "right": [9, 11, "standright", 0.4],
+            "up": [13, 15, "standup", 0.4]
+        }
+    });
 
     /*
     Class Player
@@ -40,22 +55,12 @@ $(function(){
                                 from the 'players' map. Called when other players leave.
 
      */
-    function Player(id, xpos, ypos, username, color) {
+    function Player(id, xpos, ypos, username) {
+        if (id === undefined) return;
         this.id = id;
         this.username = username;
-
-        // Create new circle for player (potential performance gain here,
-        // since we can actually reuse shapes when all other players look
-        // the same etc. See caching in EaselJS.
-        this.shape = new createjs.Container();
+        this.shape = new createjs.Sprite(playerSpriteSheet, "standdown");
         this.shape.player = this;
-        var circle = new createjs.Shape();  //
-        circle.graphics.beginFill(color);
-        circle.graphics.drawCircle(0,0,40);
-        var title = new createjs.Text(this.username, "18px Arial", "#FFFFFF");
-        title.x = -title.getMeasuredWidth() / 2;
-        title.y = -title.getMeasuredLineHeight() / 2;
-        this.shape.addChild(circle, title);
         stage.addChild(this.shape);
         this.setPos(xpos, ypos);
     }
@@ -75,8 +80,29 @@ $(function(){
             delete players[id];
             update = true;
 
+        },
+        moveTo: function(xpos, ypos) {
+            var oldx = this.shape.x;
+            var oldy = this.shape.y;
+
+            if (xpos - oldx > 0) {                      // Moved right
+                this.playIfNotPlaying("right");
+            } else if(xpos - oldx < 0) {                // Moved left
+                this.playIfNotPlaying("left");
+            } else if (ypos - oldy < 0) {                      // Moved up
+                this.playIfNotPlaying("up");
+            } else if(ypos - oldy > 0) {                // Moved down
+                this.playIfNotPlaying("down");
+            }
+
+            this.setPos(xpos,ypos);
+        },
+        playIfNotPlaying: function(direction) {
+            if (this.shape.currentAnimation != direction) {
+                this.shape.gotoAndPlay(direction);
+            }
         }
-    }
+    };
 
     /*
      Class OwnPlayer extends Player
@@ -95,31 +121,31 @@ $(function(){
             this.offset = {x: this.x - evt.stageX, y: this.y - evt.stageY};
         });
         this.shape.on('pressmove', function (evt) {
-            this.player.setPos(evt.stageX + this.offset.x, evt.stageY + this.offset.y);
+            this.player.moveTo(evt.stageX + this.offset.x, evt.stageY + this.offset.y);
         });
 
         //setup key event handling, to be able to walk with the keys
         var that = this;
         $(document).keydown(function(event){
-            var step = 5;
+            var step = 10;
             switch (event.keyCode){
                 case 37:
-                    that.setPos(that.getPos().x - step, that.getPos().y);
+                    that.moveTo(that.getPos().x - step, that.getPos().y);
                     break;
                 case 38:
-                    that.setPos(that.getPos().x, that.getPos().y - step);
+                    that.moveTo(that.getPos().x, that.getPos().y - step);
                     break;
                 case 39:
-                    that.setPos(that.getPos().x + step, that.getPos().y);
+                    that.moveTo(that.getPos().x + step, that.getPos().y);
                     break;
                 case 40:
-                    that.setPos(that.getPos().x, that.getPos().y + step);
+                    that.moveTo(that.getPos().x, that.getPos().y + step);
             }
         });
 
 
     }
-    OwnPlayer.prototype = new Player;
+    OwnPlayer.prototype = new Player();
 
     // Overwrite the setPos function (emit new position along with redraw)
     OwnPlayer.prototype.setPos = function(xpos, ypos) {
@@ -127,7 +153,6 @@ $(function(){
         this.shape.y = ypos;
         update = true;
         var pos = this.getPos();
-
         socket.emit('updatepos', pos );
     };
 
@@ -143,9 +168,9 @@ $(function(){
 
         // Update player if we know about him, else create a new game object
         if (newPos.id in players) {
-            players[newPos.id].setPos(newPos.x, newPos.y);
+            players[newPos.id].moveTo(newPos.x, newPos.y);
         } else {
-            players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username, 'black');
+            players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username);
         }
 
     });
@@ -175,7 +200,7 @@ $(function(){
         socket.emit('login', param );
         $('#joinform').hide( "fade", function() {
             $('#mycanvas').fadeIn(200);
-            ownPlayer = new OwnPlayer(socket.id, param.x, param.y, param.username, 'red');
+            ownPlayer = new OwnPlayer(socket.id, param.x, param.y, param.username);
             players[ownPlayer.id] = ownPlayer; // Save game object in global map of player objects.
         } );
     });
