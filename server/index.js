@@ -4,7 +4,23 @@ app.init = function(server) {
     var that = this;
     app.io = require('socket.io')(server);
 
+
+
     app.io.on('connect', function(socket) {
+        /* Send available rooms */
+        var rooms = socket.adapter.rooms;
+        var sids = socket.adapter.sids;
+        var roomNames = [];
+
+        for (var key in rooms) {
+            if (rooms.hasOwnProperty(key)) {
+                var room = rooms[key];
+                if(!sids.hasOwnProperty(key)) {
+                    roomNames.push(key);
+                }
+            }
+        }
+        socket.emit('roomUpdate', roomNames);
 
         /* When a user logs in */
         socket.on('login', function(data) {
@@ -63,4 +79,3 @@ app.init = function(server) {
 
     });
 }
-
