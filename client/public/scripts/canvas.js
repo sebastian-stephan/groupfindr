@@ -103,16 +103,16 @@ $(function(){
         $(document).keydown(function(event){
             var step = 5;
             switch (event.keyCode){
-                case 37:
+                case 37: // left arrow
                     that.setPos(that.getPos().x - step, that.getPos().y);
                     break;
-                case 38:
+                case 38: // up arrow
                     that.setPos(that.getPos().x, that.getPos().y - step);
                     break;
-                case 39:
+                case 39: // right arrow
                     that.setPos(that.getPos().x + step, that.getPos().y);
                     break;
-                case 40:
+                case 40: // down arrow
                     that.setPos(that.getPos().x, that.getPos().y + step);
             }
         });
