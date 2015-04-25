@@ -17,3 +17,20 @@ ul.chat {
 .col-md-3 {
     overflow: hidden;
 }
+
+/* START GROUP INFO */
+ul.group-members {
+    padding-left: 0px;
+    display: inline-block;
+    font-size:smaller;
+}
+
+/* Display list in two columns */
+ul.group-members li {
+    float: left;
+    display: inline;
+    width: 50%;
+    overflow: hidden;
+}
+
+/* END GROUP INFO */

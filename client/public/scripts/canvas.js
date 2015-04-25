@@ -12,6 +12,7 @@ $(function(){
     stage.enableMouseOver();
     createjs.Touch.enable(stage);
 
+
     // Register 'tick' function, which is called multiple times
     // depending on framerate. We update the canvas, if update is
     // set to true and set it back to false. This way we avoid

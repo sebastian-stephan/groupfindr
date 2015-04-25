@@ -1,5 +1,9 @@
 $(function(){
     var socket = io();
+
+    // Initialize tooltip
+    $('[data-toggle="tooltip"]').tooltip();
+
     /**
      *  Adds option to th roomlist
      */
@@ -10,4 +14,14 @@ $(function(){
             }));
         });
     });
+
 });
+/**
+ *  Adds participant to a group
+ */
+function addParticipant(groupID, name){
+    alert(name);
+    $('#g'+groupID).find('ul').append($('<li>', {
+        text: name
+    }));
+}
