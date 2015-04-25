@@ -5,10 +5,23 @@ app.init = function (server) {
   app.io = require('socket.io')(server);
 
   var groups = {};
+  var groupRadius = 50;
   var groupPositions = [
     {
-      x: 300,
-      y: 300
+      x: 50,
+      y: 50
+    },
+    {
+      x: 550,
+      y: 50
+    },
+    {
+      x: 550,
+      y: 550
+    },
+    {
+      x: 50,
+      y: 550
     }
   ];
 
@@ -26,7 +39,7 @@ app.init = function (server) {
   Group.prototype = {
     constructor: Group,
     setGroupPos: function() {
-      for (var i = 1; i <= 8; i++) {
+      for (var i = 0; i < 8; i++) {
         var taken = false;
         for (var j in groups) {
           if (groups[j].groupPos == groupPositions[i]) {
@@ -37,13 +50,14 @@ app.init = function (server) {
           return groupPositions[i];
         }
       }
+      return null;
     }
   };
 
   function getGroup(x, y) {
     for (var j in groups) {
       var distance = Math.sqrt(Math.pow(groups[j].groupPos.x - x, 2) + Math.pow(groups[j].groupPos.y - y, 2));
-      if (distance <= 20) { // Todo: Hardcoded number, replace when canvas is fixed
+      if (distance <= groupRadius) {
         return groups[j];
       }
     }
@@ -68,10 +82,27 @@ app.init = function (server) {
 
     /* When a user creates a group */
     socket.on('creategroup', function(data) {
+      var exists = false;
+      for (var name in groups) {
+        if (name == data.name) {
+          exists = true;
+        }
+      }
+      if (exists) {
+        socket.emit('groupcreationfailed', 'Group already exists!');
+        return;
+      }
       var newGroup = new Group(data.name, data.description);
+      if (!newGroup.groupPos) {
+        socket.emit('groupcreationfailed', 'No space for more groups!');
+        return;
+      }
       groups[newGroup.name] = newGroup;
-      for (var socketId in room) {
-        socket[socketId].emit('groupcreated', newGroup);
+      for (index = 0, len = socket.rooms.length; index < len; ++index) {
+        var room = socket.rooms[index];
+        if (!(room === socket.id)) {
+          app.io.to(room).emit('groupcreated', newGroup);
+        }
       }
     });
 
@@ -126,11 +157,11 @@ app.init = function (server) {
           app.io.to(room).emit('update', newPos);
           if (oldGroup == null && newGroup != null) {
             socket.group = newGroup;
-            app.io.to(room).emit('joinedGroup', {id: socket.id, name: newGroup.name});
+            app.io.to(room).emit('joinedgroup', {id: socket.id, name: newGroup.name});
           }
           if (oldGroup != null && newGroup == null) {
             socket.group = null;
-            app.io.to(room).emit('leftGroup', {id: socket.id, name: newGroup.name});
+            app.io.to(room).emit('leftgroup', {id: socket.id, name: oldGroup.name});
           }
         }
 

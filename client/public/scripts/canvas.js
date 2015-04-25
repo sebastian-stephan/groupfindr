@@ -177,6 +177,32 @@ $(function(){
 
     });
 
+  // Group creation
+  socket.on('groupcreated', function(group) {
+    console.log(group);
+  });
+  socket.on('joinedgroup', function(info) {
+    console.log('joined group: ' + info);
+  });
+  socket.on('leftgroup', function(info) {
+    console.log('left group: ' + info);
+  });
+  socket.on('groupcreationfailed', function(msg) {
+    alert(msg);
+  });
+
+  $('#createGroupButton').click(function(){
+    var name = $('#groupName').val();
+    var description = $('#groupDescription').val();
+    if (name == "") {
+      alert('Please enter a group name')
+    } else {
+      socket.emit('creategroup', {name: name, description: description});
+      $('#groupName').val('');
+      $('#groupDescription').val('');
+    }
+  });
+
     /**
      * Incoming socket call: called when a player leaves. Removes him
      * from the screen and map.
