@@ -28,7 +28,7 @@ app.init = function (server) {
   /*
    Class Group
    Class representing any group in the room.
-  */
+   */
 
   function Group(name, description) {
     if (name === undefined) return;
@@ -36,9 +36,10 @@ app.init = function (server) {
     this.description = description;
     this.groupPos = this.setGroupPos();
   }
+
   Group.prototype = {
     constructor: Group,
-    setGroupPos: function() {
+    setGroupPos: function () {
       for (var i = 0; i < 8; i++) {
         var taken = false;
         for (var j in groups) {
@@ -80,8 +81,15 @@ app.init = function (server) {
     }
     socket.emit('roomUpdate', roomNames);
 
+    /*get groups*/
+    socket.on('getgroups', function (data) {
+      socket.emit('listGroups', groups);
+      return;
+    });
+
+
     /* When a user creates a group */
-    socket.on('creategroup', function(data) {
+    socket.on('creategroup', function (data) {
       var exists = false;
       for (var name in groups) {
         if (name == data.name) {
@@ -145,29 +153,36 @@ app.init = function (server) {
 
       var newPos = {id: socket.id, username: socket.username, x: socket.x, y: socket.y};
 
+      var joinedgroup = false;
+      var leftgroup = false;
+      if (oldGroup == null && newGroup != null) {
+        socket.group = newGroup;
+        joinedgroup = true;
+      }
+      if (oldGroup != null && newGroup == null) {
+        socket.group = null;
+        leftgroup = true;
+      }
+
       // Broadcast new position to all rooms except own 'private' room
       // socket.io by default joins a room with the name of the socket id
       // We don't need that -> Performance gain.
 
       // Also think about disallowing multiple rooms for one socket. Doesn't really make
       // sense since he/she would move around the same path in multiple rooms.
+
       for (index = 0, len = socket.rooms.length; index < len; ++index) {
         var room = socket.rooms[index];
         if (!(room === socket.id)) {
           app.io.to(room).emit('update', newPos);
-          if (oldGroup == null && newGroup != null) {
-            socket.group = newGroup;
+          if (joinedgroup) {
             app.io.to(room).emit('joinedgroup', {id: socket.id, name: newGroup.name});
           }
-          if (oldGroup != null && newGroup == null) {
-            socket.group = null;
+          if (leftgroup) {
             app.io.to(room).emit('leftgroup', {id: socket.id, name: oldGroup.name});
           }
         }
-
       }
-
-
     });
 
     /* when a chat arrives */
