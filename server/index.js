@@ -30,10 +30,11 @@ app.init = function (server) {
    Class representing any group in the room.
    */
 
-  function Group(name, description) {
+  function Group(name, description, roomname) {
     if (name === undefined) return;
     this.name = name;
     this.description = description;
+    this.roomname = roomname;
     this.groupPos = this.setGroupPos();
   }
 
@@ -42,8 +43,9 @@ app.init = function (server) {
     setGroupPos: function () {
       for (var i = 0; i < 8; i++) {
         var taken = false;
-        for (var j in groups) {
-          if (groups[j].groupPos == groupPositions[i]) {
+        for (var groupname in app.io.nsps['/'].adapter.rooms[this.roomname].groups) {
+          var group = app.io.nsps['/'].adapter.rooms[this.roomname].groups[groupname];
+          if (group.groupPos == groupPositions[i]) {
             taken = true;
           }
         }
@@ -55,83 +57,94 @@ app.init = function (server) {
     }
   };
 
-  function getGroup(x, y) {
-    for (var j in groups) {
-      var distance = Math.sqrt(Math.pow(groups[j].groupPos.x - x, 2) + Math.pow(groups[j].groupPos.y - y, 2));
+  function getGroup(room, x, y) {
+    for (var groupname in room.groups) {
+      var group = room.groups[groupname];
+      var distance = Math.sqrt(Math.pow(group.groupPos.x - x, 2) + Math.pow(group.groupPos.y - y, 2));
       if (distance <= groupRadius) {
-        return groups[j];
+        return group;
       }
     }
     return null;
   }
 
   app.io.on('connect', function (socket) {
+    /* Leave 'own' group. Socket.io by default joins room with the name of the socket id */
+    socket.leave(socket.id);
+
     /* Send available rooms */
-    var rooms = socket.adapter.rooms;
-    var sids = socket.adapter.sids;
-    var roomNames = [];
+    socket.emit('roomUpdate', Object.keys(socket.adapter.rooms));
 
-    for (var key in rooms) {
-      if (rooms.hasOwnProperty(key)) {
-        var room = rooms[key];
-        if (!sids.hasOwnProperty(key)) {
-          roomNames.push(key);
-        }
-      }
-    }
-    socket.emit('roomUpdate', roomNames);
+    // This later holds room specific information such as x,y positions and the current group
+    socket.roomdata = {};
 
-    /*get groups*/
+    /* TODO: needed? get groups*/
     socket.on('getgroups', function (data) {
       socket.emit('listGroups', groups);
       return;
     });
 
-
     /* When a user creates a group */
     socket.on('creategroup', function (data) {
       var exists = false;
-      for (var name in groups) {
-        if (name == data.name) {
+      for (var name in socket.adapter.rooms[data.roomname].groups) {
+        if (name == data.groupname) {
           exists = true;
         }
       }
+
       if (exists) {
-        socket.emit('groupcreationfailed', 'Group already exists!');
+        socket.emit('error', 'Group already exists!');
         return;
       }
-      var newGroup = new Group(data.name, data.description);
+
+      // Create new Group object
+      var newGroup = new Group(data.groupname, data.groupdescription, data.roomname);
       if (!newGroup.groupPos) {
-        socket.emit('groupcreationfailed', 'No space for more groups!');
+        socket.emit('error', 'No space for more groups!');
         return;
       }
-      groups[newGroup.name] = newGroup;
-      for (index = 0, len = socket.rooms.length; index < len; ++index) {
-        var room = socket.rooms[index];
-        if (!(room === socket.id)) {
-          app.io.to(room).emit('groupcreated', newGroup);
-        }
-      }
+
+      // Create new group in the room
+      var currentRoom = socket.adapter.rooms[data.roomname];
+      currentRoom.groups[data.groupname] = newGroup;
+
+      // Send information about new group to all players in room
+      app.io.to(data.roomname).emit('groupcreated', newGroup);
+
     });
 
     /* When a user logs in */
     socket.on('login', function (data) {
       socket.join(data.room);
+      socket.roomdata[data.room] = {x: data.x, y: data.y};
+
+      // Create empty groups container if the room was newly created
+      if(!socket.adapter.rooms[data.room].groups) {
+        socket.adapter.rooms[data.room].groups = {};
+      }
       socket.username = data.username;
-      socket.x = data.x;
-      socket.y = data.y;
 
       // Send this new player's position to everyone
-      var newPos = {id: socket.id, username: socket.username, x: socket.x, y: socket.y};
+      var newPos = {id: socket.id, username: socket.username, room: data.room, x: data.x, y: data.y};
       app.io.to(data.room).emit('update', newPos);
-      // Send back information about all other players
-      var room = app.io.nsps['/'].adapter.rooms[data.room];
 
+      // Send back information about all other players
+      var room = socket.adapter.rooms[data.room];
       for (var socketId in room) {
-        var usr = that.io.sockets.connected[socketId];
-        var pos = {id: usr.id, username: usr.username, x: usr.x, y: usr.y};
-        socket.emit('update', pos);
+        if (socketId != "groups") { //TODO: HACK :(
+          var usr = that.io.sockets.connected[socketId];
+          var pos = {id: usr.id, username: usr.username, room: data.room, x: usr.roomdata[data.room].x, y: usr.roomdata[data.room].y};
+          socket.emit('update', pos);
+        }
       }
+
+      // Send back information about all groups
+      // for blabla alli gruppe
+      // socket.emit('creategroup', databla);
+
+      // for all players(socket objects) in room
+      // if player has room: emit('joinedroom', data)
 
     });
 
@@ -142,57 +155,44 @@ app.init = function (server) {
 
     /* When a user sends a position update */
     socket.on('updatepos', function (pos) {
-      var oldPos = {};
-      oldPos.x = socket.x;
-      oldPos.y = socket.y;
-      socket.x = pos.x;
-      socket.y = pos.y;
+      var oldPos = {
+        x: socket.roomdata[pos.roomname].x,
+        y: socket.roomdata[pos.roomname].y
+      };
+      socket.roomdata[pos.roomname].x = pos.x;
+      socket.roomdata[pos.roomname].y = pos.y;
 
-      var oldGroup = getGroup(oldPos.x, oldPos.y);
-      var newGroup = getGroup(socket.x, socket.y);
-
-      var newPos = {id: socket.id, username: socket.username, x: socket.x, y: socket.y};
+      var room = socket.adapter.rooms[pos.roomname];
+      var oldGroup = getGroup(room, oldPos.x, oldPos.y);
+      var newGroup = getGroup(room, pos.x, pos.y);
 
       var joinedgroup = false;
       var leftgroup = false;
       if (oldGroup == null && newGroup != null) {
-        socket.group = newGroup;
+        socket.roomdata[pos.roomname].mygroup = newGroup;
         joinedgroup = true;
       }
       if (oldGroup != null && newGroup == null) {
-        socket.group = null;
+        socket.roomdata[pos.roomname].mygroup = null;
         leftgroup = true;
       }
 
-      // Broadcast new position to all rooms except own 'private' room
-      // socket.io by default joins a room with the name of the socket id
-      // We don't need that -> Performance gain.
+      // Broadcast new position to all other player in the same room
+      var newPos = {id: socket.id, username: socket.username, room: pos.roomname, x: pos.x, y: pos.y};
+      app.io.to(pos.roomname).emit('update', newPos);
 
-      // Also think about disallowing multiple rooms for one socket. Doesn't really make
-      // sense since he/she would move around the same path in multiple rooms.
-
-      for (index = 0, len = socket.rooms.length; index < len; ++index) {
-        var room = socket.rooms[index];
-        if (!(room === socket.id)) {
-          app.io.to(room).emit('update', newPos);
-          if (joinedgroup) {
-            app.io.to(room).emit('joinedgroup', {id: socket.id, name: newGroup.name});
-          }
-          if (leftgroup) {
-            app.io.to(room).emit('leftgroup', {id: socket.id, name: oldGroup.name});
-          }
-        }
+      if (joinedgroup) {
+        app.io.to(pos.roomname).emit('joinedgroup', {id: socket.id, name: newGroup.name});
       }
+      if (leftgroup) {
+        app.io.to(pos.roomname).emit('leftgroup', {id: socket.id, name: oldGroup.name});
+      }
+
     });
 
-    /* when a chat arrives */
+    /* when a chat message arrives */
     socket.on('chatmessage', function (message) {
-      for (index = 0, len = socket.rooms.length; index < len; ++index) {
-        var room = socket.rooms[index];
-        if (!(room === socket.id)) {
-          app.io.to(room).emit('chatmessage', message);
-        }
-      }
+      app.io.to(message.roomname).emit('chatmessage', message);
     });
 
 

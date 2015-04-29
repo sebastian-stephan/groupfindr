@@ -56,9 +56,10 @@ $(function () {
    from the 'players' map. Called when other players leave.
 
    */
-  function Player(id, xpos, ypos, username) {
+  function Player(id, xpos, ypos, username, room) {
     if (id === undefined) return;
     this.id = id;
+    this.room = room;
     this.username = username;
     this.shape = new createjs.Sprite(playerSpriteSheet, "standdown");
     this.shape.player = this;
@@ -113,9 +114,9 @@ $(function () {
 
    Also emits any position change back to the server, so other players receive the update.
    */
-  function OwnPlayer(id, xpos, ypos, username, color) {
+  function OwnPlayer(id, xpos, ypos, username, room) {
     this.base = Player;
-    this.base(id, xpos, ypos, username, color); // Call superclass constructor
+    this.base(id, xpos, ypos, username, room); // Call superclass constructor
 
     // Setup mouse handlers
     this.shape.on("mousedown", function (evt) {
@@ -156,6 +157,7 @@ $(function () {
     this.shape.y = ypos;
     update = true;
     var pos = this.getPos();
+    pos.roomname = this.room;
     socket.emit('updatepos', pos);
   };
 
@@ -173,7 +175,7 @@ $(function () {
     if (newPos.id in players) {
       players[newPos.id].moveTo(newPos.x, newPos.y);
     } else {
-      players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username);
+      players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username, newPos.room);
       announceArrival(newPos.username);
     }
 
@@ -190,7 +192,7 @@ $(function () {
   socket.on('leftgroup', function (info) {
     console.log('left group: ' + info);
   });
-  socket.on('groupcreationfailed', function (msg) {
+  socket.on('error', function (msg) {
     alert(msg);
   });
 
@@ -200,7 +202,7 @@ $(function () {
     if (name == "") {
       alert('Please enter a group name')
     } else {
-      socket.emit('creategroup', {name: name, description: description});
+      socket.emit('creategroup', {roomname: ownPlayer.room, groupname: name, groupdescription: description});
       $('#groupName').val('');
       $('#groupDescription').val('');
     }
@@ -262,7 +264,8 @@ $(function () {
   var sendChatMessage = function (messagetext) {
     var chatMessage = {
       username: ownPlayer.username,
-      text: messagetext
+      text: messagetext,
+      roomname: ownPlayer.room
     }
     socket.emit('chatmessage', chatMessage);
   }
@@ -313,7 +316,7 @@ $(function () {
     $('#joinform').hide("fade", function () { //hide login form and show canvas and sidepanels
       $('#mycanvas').fadeIn(200);
       $('.row').fadeIn(200);
-      ownPlayer = new OwnPlayer(socket.id, param.x, param.y, param.username);
+      ownPlayer = new OwnPlayer(socket.id, param.x, param.y, param.username, param.room);
       players[ownPlayer.id] = ownPlayer; // Save game object in global map of player objects.
     });
   });
