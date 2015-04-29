@@ -23,6 +23,11 @@ ul.group-members {
     padding-left: 0px;
     display: inline-block;
     font-size:smaller;
+    width: 100%;
+}
+/* glyphicon */
+span.glyphicon.glyphicon-info-sign {
+    margin-left: 5px;
 }
 
 /* Display list in two columns */

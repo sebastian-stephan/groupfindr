@@ -1,8 +1,7 @@
 $(function(){
     var socket = io();
 
-    // Initialize tooltip
-    $('[data-toggle="tooltip"]').tooltip();
+
 
     /**
      *  Adds option to th roomlist

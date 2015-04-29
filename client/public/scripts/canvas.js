@@ -2,7 +2,7 @@ $(function () {
   var socket = io();  // empty argument --> takes ip of serving http server as default, MAGIC!!
   var ownPlayer;      // Holds the own players player object
   var players = {};   // Contains all player objects (incl. own)
-
+  var groups = {};    // Contains all group objects
   // Set up stage (canvas)
   var stage = new createjs.Stage('mycanvas');
   var update = true;  // Whenever we set this to true, in the next tick
@@ -107,6 +107,22 @@ $(function () {
     }
   };
 
+  function Group(name, description, room) {
+    this.name = name;
+    this.description = description;
+    this.room = room;
+    this.players = {};
+  }
+
+  Group.prototype = {
+    constructor: Group,
+    addPlayer: function (player) {
+      this.players[player.id] = player;
+    },
+    removePlayer: function (playerID){
+      delete this.players[playerID];
+    }
+  };
   /*
    Class OwnPlayer extends Player
    Class representing own player object. Inherits all functionality from Player class
@@ -183,15 +199,88 @@ $(function () {
 
   // Group creation
   socket.on('groupcreated', function (group) {
-    console.log('group' + group + 'created');
-    console.log(group);
+    var groupname = group.name.replace(/\s/g, '');
+    groups[groupname] = new Group(group.name, group.description, group.roomname);
+
+    // Create the DOM for Groups
+    var list = $('<li>', {
+      class: 'list-group-item'
+    });
+    var title = $('<h5>', {
+      text: group.name
+    });
+
+    var tooltip = $('<span>', {
+      class: 'glyphicon glyphicon-info-sign',
+      'aria-hidden': 'true',
+      title: group.description,
+      'data-toggle': 'tooltip',
+      'data-placement': 'right'
+    });
+    title.append(tooltip);
+    list.append(title);
+
+    list.append($('<ul>', {
+      class: 'group-members',
+      id: groupname
+    }));
+    $('#grouplist').append(list);
+    // Initialize tooltip
+    $('[data-toggle="tooltip"]').tooltip();
   });
+
   socket.on('joinedgroup', function (info) {
-    console.log('joined group: ' + info);
+    var groupname = info.name.replace(/\s/g, '');
+
+    if (info.addDefault && $('#'+info.id).length==0) {
+      $('#' + info.name).append($('<li>', {
+        id: info.id,
+        text: info.username,
+      }));
+    } else {
+      // Remove Player from default Group
+      $('#default').find('#' + info.id).remove();
+      // Add Player to Group
+      $('#' + groupname).append($('<li>', {
+        id: info.id,
+        text: getUsernameById(info.id)
+      }));
+    }
+
+    // Add Player to Group Object
+    var group = groups[groupname];
+    if (group) {
+      group.addPlayer(players[info.id]);
+    }
   });
+
+  var getUsernameById = function (socketId) {
+    for (var playerid in players) {
+      if (playerid = socketId) {
+        var usr = players[playerid];
+        return usr.username;
+      }
+    }
+  };
   socket.on('leftgroup', function (info) {
-    console.log('left group: ' + info);
+    var groupname = info.name.replace(/\s/g, '');
+
+    // Remove username from group
+    $('#' + groupname).find('#' + info.id).remove();
+
+    // Add Player to default
+    $('#default').append($('<li>', {
+      id: info.id,
+      text: getUsernameById(info.id)
+    }));
+
+    // Remove Player to Group Object
+    var group = groups[groupname];
+    if (group) {
+      group.removePlayer(info.id);
+    }
   });
+
   socket.on('error', function (msg) {
     alert(msg);
   });
@@ -228,6 +317,15 @@ $(function () {
       var player = players[playerID];
       announceLeave(player.username);
       players[playerID].remove();
+
+      // Remove out of groups
+      $('#' + playerID).remove();
+
+      // Remove from Group Object
+      for(var groupname in groups){
+        var group = groups[groupname];
+        group.removePlayer(playerID);
+      }
     }
   });
 

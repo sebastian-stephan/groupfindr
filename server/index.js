@@ -4,7 +4,7 @@ app.init = function (server) {
   var that = this;
   app.io = require('socket.io')(server);
 
-  var groups = {};
+
   var groupRadius = 50;
   var groupPositions = [
     {
@@ -132,7 +132,7 @@ app.init = function (server) {
       // Send back information about all other players
       var room = socket.adapter.rooms[data.room];
       for (var socketId in room) {
-        if (socketId != "groups") { //TODO: HACK :(
+        if(typeof room[socketId] != 'object'){
           var usr = that.io.sockets.connected[socketId];
           var pos = {id: usr.id, username: usr.username, room: data.room, x: usr.roomdata[data.room].x, y: usr.roomdata[data.room].y};
           socket.emit('update', pos);
@@ -140,11 +140,31 @@ app.init = function (server) {
       }
 
       // Send back information about all groups
-      // for blabla alli gruppe
-      // socket.emit('creategroup', databla);
+      var groups = socket.adapter.rooms[data.room].groups;
+      for(var groupname in groups){
+        var group = socket.adapter.rooms[data.room].groups[groupname];
+        socket.emit('groupcreated', group);
+      }
 
       // for all players(socket objects) in room
-      // if player has room: emit('joinedroom', data)
+      for (var socketId in room) {
+        // only socketIds, no groups property
+          if(typeof room[socketId] != 'object'){
+            var usr = that.io.sockets.connected[socketId];
+            // check if player is in a group
+            if(usr.roomdata[data.room].mygroup){
+              var group = usr.roomdata[data.room].mygroup;
+              // if player has room: emit('joinedroom', data)
+              app.io.to(data.room).emit('joinedgroup', {id: socketId, name: group.name});
+            }else{
+              app.io.to(data.room).emit('joinedgroup', {id: socketId, name: 'default',username: usr.username, addDefault: true});
+            }
+          }
+      }
+
+      // Add Player to default Group
+     // app.io.to(data.room).emit('joinedgroup', {id: socket.id, name: 'default', username: socket.username, addDefault: true});
+
 
     });
 

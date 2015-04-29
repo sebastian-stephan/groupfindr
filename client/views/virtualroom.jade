@@ -20,7 +20,7 @@ block content
                 .control-group
                     label.control-label(for='room') Room
                     .controls
-                        input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='', list="rooms")
+                        input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='', list='rooms', autocomplete='off')
                         datalist#rooms
 
                 // Join Button
@@ -32,32 +32,28 @@ block content
             .row
                 .col-md-2
                     h3 Group Info
-                    ul.list-group
-                        li#g1.list-group-item
+                    ul#grouplist.list-group
+                        //li#g1.list-group-item
                             h5 Group 1
                                 span.glyphicon.glyphicon-info-sign(aria-hidden='true', data-toggle='tooltip' data-placement='right' title='Title, Subject or any other information')
                             ul.group-members
-                                li One
-                                li Two
-                                li Three
-                        li#g2.list-group-item
+                                //li One
+                                //li Two
+                                //li Three
+
+                        //li#g2.list-group-item
                             h5 Group 2
                                 span.glyphicon.glyphicon-info-sign(aria-hidden='true', data-toggle='tooltip' data-placement='right' title='Title, Subject or any other information')
                             ul.group-members
                                 li One
                                 li Two
                                 li Three
-                                li Four
-                        li#g0.list-group-item
+                                li Fou
+                    ul.list-group
+                        li.list-group-item
                             h5 Not Yet Assigned
-                            ul.group-members
-                                li Oasdfasdfasdfne
-                                li Two
-                                li Three
-                                li Four
-                                li Five
-                                li Six
-                                li Seven
+                            ul#default.group-members
+
                     h3 Create group
                     input#groupName.input-xlarge(name='groupName', type='text', placeholder='Name')
                     input#groupDescription.input-xlarge(name='groupDescription', type='text', placeholder='Description')
