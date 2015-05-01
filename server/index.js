@@ -155,7 +155,7 @@ app.init = function (server) {
             if(usr.roomdata[data.room].mygroup){
               var group = usr.roomdata[data.room].mygroup;
               // if player has room: emit('joinedroom', data)
-              app.io.to(data.room).emit('joinedgroup', {id: socketId, name: group.name});
+              app.io.to(data.room).emit('joinedgroup', {id: socketId, name: group.name, username: usr.username});
             }else{
               app.io.to(data.room).emit('joinedgroup', {id: socketId, name: 'default',username: usr.username, addDefault: true});
             }
@@ -202,10 +202,10 @@ app.init = function (server) {
       app.io.to(pos.roomname).emit('update', newPos);
 
       if (joinedgroup) {
-        app.io.to(pos.roomname).emit('joinedgroup', {id: socket.id, name: newGroup.name});
+        app.io.to(pos.roomname).emit('joinedgroup', {id: socket.id, name: newGroup.name, username: newPos.username});
       }
       if (leftgroup) {
-        app.io.to(pos.roomname).emit('leftgroup', {id: socket.id, name: oldGroup.name});
+        app.io.to(pos.roomname).emit('leftgroup', {id: socket.id, name: oldGroup.name, username: newPos.username});
       }
 
     });

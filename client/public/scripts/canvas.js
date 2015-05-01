@@ -232,6 +232,9 @@ $(function () {
   socket.on('joinedgroup', function (info) {
     var groupname = info.name.replace(/\s/g, '');
 
+    //announce on the chat that the player has joined the group
+    announceJoinGroup(info.username,groupname)
+
     if (info.addDefault && $('#'+info.id).length==0) {
       $('#' + info.name).append($('<li>', {
         id: info.id,
@@ -264,6 +267,9 @@ $(function () {
   };
   socket.on('leftgroup', function (info) {
     var groupname = info.name.replace(/\s/g, '');
+
+    //announce on the chat that the player has left the group
+    announceLeaveGroup(info.username,groupname)
 
     // Remove username from group
     $('#' + groupname).find('#' + info.id).remove();
@@ -329,11 +335,23 @@ $(function () {
     }
   });
 
+  var announceJoinGroup = function (username, group) {
+      $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' joined the group ' + group + '</li>');
+      $('li').last().focus();
+      $('#chatinput').focus();
+  }
+
+  var announceLeaveGroup = function (username, group) {
+      $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' left the group ' + group + '</li>');
+      $('li').last().focus();
+      $('#chatinput').focus();
+  }
+
+
   var announceArrival = function (username) {
     $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' entered the room! </li>');
     $('li').last().focus();
     $('#chatinput').focus();
-
   }
 
   var announceLeave = function (username) {

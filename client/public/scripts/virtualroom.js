@@ -1,8 +1,5 @@
 $(function(){
     var socket = io();
-
-
-
     /**
      *  Adds option to th roomlist
      */
