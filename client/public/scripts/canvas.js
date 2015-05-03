@@ -5,6 +5,9 @@ $(function () {
   var groups = {};    // Contains all group objects
   // Set up stage (canvas)
   var stage = new createjs.Stage('mycanvas');
+
+
+
   var update = true;  // Whenever we set this to true, in the next tick
                       // the stage will be updated. This way we only update
                       // the canvas if there is a change.
@@ -88,11 +91,11 @@ $(function () {
       var oldx = this.shape.x;
       var oldy = this.shape.y;
 
-      if (xpos - oldx > 0) {                      // Moved right
+      if (xpos - oldx > 0) {                       // Moved right
         this.playIfNotPlaying("right");
       } else if (xpos - oldx < 0) {                // Moved left
         this.playIfNotPlaying("left");
-      } else if (ypos - oldy < 0) {                      // Moved up
+      } else if (ypos - oldy < 0) {                // Moved up
         this.playIfNotPlaying("up");
       } else if (ypos - oldy > 0) {                // Moved down
         this.playIfNotPlaying("down");
@@ -201,6 +204,16 @@ $(function () {
   socket.on('groupcreated', function (group) {
     var groupname = group.name.replace(/\s/g, '');
     groups[groupname] = new Group(group.name, group.description, group.roomname);
+
+      //representation of the group on the canvas (circle for now)
+    var groupCloud  = new createjs.Bitmap("images/cloud.png");
+    //groupCircle.x = group.groupPos.x;
+    //groupCircle.y = group.groupPos.y;
+
+    groupCloud.x = group.groupPos.x -50;
+    groupCloud.y = group.groupPos.y -50;
+    stage.addChildAt(groupCloud,0);
+    stage.update();
 
     // Create the DOM for Groups
     var list = $('<li>', {
