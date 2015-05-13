@@ -323,10 +323,6 @@ $(function () {
     console.log('get group2');
   });
 
-  socket.on('listGroups', function (msg) {
-    alert(msg);
-  });
-
   /**
    * Incoming socket call: called when a player leaves. Removes him
    * from the screen and map.

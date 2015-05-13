@@ -78,12 +78,6 @@ app.init = function (server) {
     // This later holds room specific information such as x,y positions and the current group
     socket.roomdata = {};
 
-    /* TODO: needed? get groups*/
-    socket.on('getgroups', function (data) {
-      socket.emit('listGroups', groups);
-      return;
-    });
-
     /* When a user creates a group */
     socket.on('creategroup', function (data) {
       var exists = false;
