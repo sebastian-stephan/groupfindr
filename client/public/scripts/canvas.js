@@ -300,7 +300,7 @@ $(function () {
     }
   });
 
-  socket.on('error', function (msg) {
+  socket.on('errormessage', function (msg) {
     alert(msg);
   });
 
