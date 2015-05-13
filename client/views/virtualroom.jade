@@ -63,16 +63,22 @@ block content
 
                     button#getGroupsButton.btn.btn-primary(type='submit') get groups
 
-                .col-md-7
+                .col-md-10
                     canvas#mycanvas(width='600', height='600')
                         | Your browser does not support canvas.
-                .col-md-3
-                    h3 Chat
-                    ul(class="chat",id="chatlist")
-                    .input-group
-                        input(type="text",class="form-control",id="chatinput")
-                        span(class="input-group-btn")
-                            button(type="button",class="btn btn-primary", id="chatbutton") Enter
+
+                .chat-box
+                    input(type="checkbox")
+                    label(data-expanded="Close Chatbox" data-collapsed="Open Chatbox")
+                    .chat-box-content
+                        ul(class="chat",id="chatlist")
+                        .input-group
+                            input(type="text",class="form-control",id="chatinput", style="font-size:10px;" )
+                            span(class="input-group-btn")
+                                button(type="button",class="btn btn-primary", id="chatbutton") Enter
+
+
+
 
 
 

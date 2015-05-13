@@ -350,7 +350,7 @@ $(function () {
   });
 
   var announceJoinGroup = function (username, group) {
-      $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' joined the group ' + group + '</li>');
+     // $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' joined the group ' + group + '</li>');
       $('li').last().focus();
       $('#chatinput').focus();
   };
@@ -363,13 +363,13 @@ $(function () {
 
 
   var announceArrival = function (username) {
-    $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' entered the room! </li>');
+   // $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' entered the room! </li>');
     $('li').last().focus();
     $('#chatinput').focus();
   };
 
   var announceLeave = function (username) {
-    $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' left the room! </li>');
+   // $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' left the room! </li>');
     $('li').last().focus();
     $('#chatinput').focus();
   };
@@ -401,7 +401,8 @@ $(function () {
   };
 
   var addOwnChatMessage = function (message) {
-    $('#chatlist').append('<li tabindex="1"><p class="triangle-isosceles left">' + message + '</li>');
+    //$('#chatlist').append('<li tabindex="1"><p class="triangle-isosceles left">' + message + '</li>');
+    $('#chatlist').append('<li tabindex="1">Me: ' + message + '</li>');
     $('li').last().focus();
     $('#chatinput').val('');
     $('#chatinput').focus();
@@ -414,7 +415,8 @@ $(function () {
     var text = chatMessage.text;
     var user = chatMessage.username;
 
-    $('#chatlist').append('<li tabindex="1"><p class="triangle-right right"><b>' + user + ': </b>' + text + '</p></li>');
+    //$('#chatlist').append('<li tabindex="1"><p class="triangle-right right"><b>' + user + ': </b>' + text + '</p></li>');
+    $('#chatlist').append('<li tabindex="1"><b>' + user + ': </b>' + text + '</li>');
     $('li').last().focus();
     $('#chatinput').focus();
 
