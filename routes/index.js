@@ -1,5 +1,5 @@
 exports.index = function(req, res){
-  res.render('index', { title: 'Home' });
+  res.render('virtualroom', { title: 'Virtual Room' });
 };
 
 exports.chat = function(req, res){
