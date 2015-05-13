@@ -165,6 +165,16 @@ app.init = function (server) {
     /* When a user logs out */
     socket.on('disconnect', function () {
       app.io.sockets.emit('remove', socket.id);
+
+      // Normally socket.io deletes garbage collects empty rooms on disconnect,
+      // but since we manually added a 'gorups' object, we have to manually clean
+      // the room.
+      for (roomname in socket.adapter.rooms) {
+        var room = socket.adapter.rooms[roomname];
+        if (Object.keys(room).length <= 1 && room.hasOwnProperty('groups')) {
+          delete socket.adapter.rooms[roomname];
+        }
+      }
     });
 
     /* When a user sends a position update */
