@@ -205,13 +205,14 @@ $(function () {
     var groupname = group.name.replace(/\s/g, '');
     groups[groupname] = new Group(group.name, group.description, group.roomname);
 
-      //representation of the group on the canvas (circle for now)
-    var groupCloud  = new createjs.Bitmap("images/cloud.png");
-    //groupCircle.x = group.groupPos.x;
-    //groupCircle.y = group.groupPos.y;
+    var groupRadius = 100;
 
-    groupCloud.x = group.groupPos.x -50;
-    groupCloud.y = group.groupPos.y -50;
+    var groupCloud  = new createjs.Bitmap("images/cloud.png")
+    groupCloud.scaleX = 2
+    groupCloud.scaleY = 2;
+
+    groupCloud.x = group.groupPos.x -groupRadius;
+    groupCloud.y = group.groupPos.y -groupRadius;
     stage.addChildAt(groupCloud,0);
     stage.update();
 
@@ -434,8 +435,8 @@ $(function () {
     var param = {};
     param.username = $('#username').val();
     param.room = $('#room').val();
-    param.x = 300;  // Spawn position
-    param.y = 300;
+    param.x = 500;  // Spawn position
+    param.y = 500;
     socket.emit('login', param);
     $('#joinform').hide("fade", function () { //hide login form and show canvas and sidepanels
       $('#mycanvas').fadeIn(200);

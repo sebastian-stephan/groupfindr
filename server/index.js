@@ -5,23 +5,26 @@ app.init = function (server) {
   app.io = require('socket.io')(server);
 
 
-  var groupRadius = 50;
+  var canvasWidth = 1000;
+  var canvasHeight = 1000;
+
+  var groupRadius = 100;
   var groupPositions = [
     {
-      x: 50,
-      y: 50
+      x: 0 + groupRadius,
+      y: 0 + groupRadius
     },
     {
-      x: 550,
-      y: 50
+      x: canvasWidth - groupRadius,
+      y: 0 + groupRadius
     },
     {
-      x: 550,
-      y: 550
+      x: canvasWidth - groupRadius,
+      y: canvasHeight - groupRadius
     },
     {
-      x: 50,
-      y: 550
+      x: 0 + groupRadius,
+      y: canvasHeight - groupRadius
     }
   ];
 
