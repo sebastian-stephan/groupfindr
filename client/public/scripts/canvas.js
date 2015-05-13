@@ -90,7 +90,7 @@ $(function () {
     moveTo: function (xpos, ypos) {
       var oldx = this.shape.x;
       var oldy = this.shape.y;
-
+      console.log(xpos);
       if (xpos - oldx > 0) {                       // Moved right
         this.playIfNotPlaying("right");
       } else if (xpos - oldx < 0) {                // Moved left
@@ -101,7 +101,12 @@ $(function () {
         this.playIfNotPlaying("down");
       }
 
-      this.setPos(xpos, ypos);
+      // Disallow escaping from the canvas
+      if(xpos > 0 && xpos < 600 && ypos > 0 && ypos < 600 ){
+        this.setPos(xpos, ypos);
+      }
+
+
     },
     playIfNotPlaying: function (direction) {
       if (this.shape.currentAnimation != direction) {
