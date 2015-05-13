@@ -251,7 +251,7 @@ $(function () {
     if (info.addDefault && $('#'+info.id).length==0) {
       $('#' + info.name).append($('<li>', {
         id: info.id,
-        text: info.username,
+        text: info.username
       }));
     } else {
       // Remove Player from default Group
@@ -348,26 +348,26 @@ $(function () {
       $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' joined the group ' + group + '</li>');
       $('li').last().focus();
       $('#chatinput').focus();
-  }
+  };
 
   var announceLeaveGroup = function (username, group) {
       $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' left the group ' + group + '</li>');
       $('li').last().focus();
       $('#chatinput').focus();
-  }
+  };
 
 
   var announceArrival = function (username) {
     $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' entered the room! </li>');
     $('li').last().focus();
     $('#chatinput').focus();
-  }
+  };
 
   var announceLeave = function (username) {
     $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' left the room! </li>');
     $('li').last().focus();
     $('#chatinput').focus();
-  }
+  };
 
   //Chat logic
 
@@ -391,17 +391,16 @@ $(function () {
       username: ownPlayer.username,
       text: messagetext,
       roomname: ownPlayer.room
-    }
+    };
     socket.emit('chatmessage', chatMessage);
-  }
+  };
 
   var addOwnChatMessage = function (message) {
     $('#chatlist').append('<li tabindex="1"><p class="triangle-isosceles left">' + message + '</li>');
     $('li').last().focus();
     $('#chatinput').val('');
     $('#chatinput').focus();
-
-  }
+  };
 
   /**
    * Adds a chat message that came in on the socket to the chat display
@@ -414,7 +413,7 @@ $(function () {
     $('li').last().focus();
     $('#chatinput').focus();
 
-  }
+  };
 
   /**
    * Handles incoming chatMessages on the sockets
