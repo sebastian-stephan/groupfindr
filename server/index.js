@@ -91,14 +91,14 @@ app.init = function (server) {
       }
 
       if (exists) {
-        socket.emit('error', 'Group already exists!');
+        socket.emit('errormessage', 'Group already exists!');
         return;
       }
 
       // Create new Group object
       var newGroup = new Group(data.groupname, data.groupdescription, data.roomname);
       if (!newGroup.groupPos) {
-        socket.emit('error', 'No space for more groups!');
+        socket.emit('errormessage', 'No space for more groups!');
         return;
       }
 
