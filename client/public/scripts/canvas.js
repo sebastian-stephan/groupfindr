@@ -265,8 +265,20 @@ $(function () {
       'data-toggle': 'tooltip',
       'data-placement': 'right'
     });
+
+    var deleteicon = $('<span>', {
+      class: 'glyphicon glyphicon-remove',
+      'aria-hidden': 'true',
+      id:"deletegroup",
+      'data-placement': 'right'
+    });
+
     title.append(tooltip);
+    title.append(deleteicon);
     list.append(title);
+
+
+
 
     list.append($('<ul>', {
       class: 'group-members',
@@ -356,6 +368,13 @@ $(function () {
     console.log('get group');
     socket.emit('getgroups');
     console.log('get group2');
+  });
+
+  /*delete group*/
+  $('#deletegroup').click(function () {
+    console.log('delete group');
+    /*socket.emit('getgroups');
+    console.log('get group2');*/
   });
 
   /**
