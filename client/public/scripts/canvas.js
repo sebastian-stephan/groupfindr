@@ -255,7 +255,8 @@ $(function () {
 
     // Create the DOM for Groups
     var list = $('<li>', {
-      class: 'list-group-item'
+      class: 'list-group-item',
+      "id": group.name
     });
     var title = $('<h5>', {
       text: group.name
@@ -314,7 +315,7 @@ $(function () {
       // Remove Player from default Group
       $('#default').find('#' + info.id).remove();
       // Add Player to Group
-      $('#' + groupname).append($('<li>', {
+      $('ul#' + groupname).append($('<li>', {
         id: info.id,
         text: getUsernameById(info.id)
       }));
@@ -343,7 +344,7 @@ $(function () {
     announceLeaveGroup(info.username,groupname)
 
     // Remove username from group
-    $('#' + groupname).find('#' + info.id).remove();
+    $('ul#' + groupname).find('#' + info.id).remove();
 
     // Add Player to default
     $('#default').append($('<li>', {
