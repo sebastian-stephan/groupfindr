@@ -90,7 +90,6 @@ $(function () {
     moveTo: function (xpos, ypos) {
       var oldx = this.shape.x;
       var oldy = this.shape.y;
-      console.log(xpos);
       if (xpos - oldx > 0) {                       // Moved right
         this.playIfNotPlaying("right");
       } else if (xpos - oldx < 0) {                // Moved left
