@@ -252,7 +252,8 @@ $(function () {
 
     // Create the DOM for Groups
     var list = $('<li>', {
-      class: 'list-group-item'
+      class: 'list-group-item',
+      "id": group.name
     });
     var title = $('<h5>', {
       text: group.name
@@ -269,9 +270,19 @@ $(function () {
     var deleteicon = $('<span>', {
       class: 'glyphicon glyphicon-remove deletegroup',
       'aria-hidden': 'true',
-      'onclick': "deleteGroup('"+ownPlayer.room+"', '"+group.name+"')",
       'data-placement': 'right'
+    }).click(function() {
+      //remove in frontend
+      $('#'+group.name).remove();
+      groups[group.name]= null;
+      var groupinfo = {
+        roomname: group.roomname,
+        groupname: group.name
+      }
+      socket.emit('deletegroup', groupinfo);
     });
+
+
 
     title.append(tooltip);
     title.append(deleteicon);
@@ -289,6 +300,7 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
   });
+
 
   socket.on('joinedgroup', function (info) {
     var groupname = info.name.replace(/\s/g, '');
@@ -501,6 +513,3 @@ $(function () {
   });
 
 });
-function deleteGroup(roomname, groupname){
-  console.log("roomname "+ roomname +" groupnae: "+ groupname );
-}
