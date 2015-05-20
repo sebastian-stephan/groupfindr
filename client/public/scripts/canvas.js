@@ -27,21 +27,51 @@ $(function () {
     }
   });
 
+
+  var Grayscale = new createjs.ColorMatrixFilter([
+    0.30,0.30,0.30,0,0, // red component
+    0.30,0.30,0.30,0,0, // green component
+    0.30,0.30,0.30,0,0, // blue component
+    0,0,0,1,0  // alpha
+  ]);
+
+  // Preload the image
+  var img = document.createElement("img");
+  img.src = "images/player.png";
+  img.onload = createSprites;
+
+  var playerSpriteSheet;
+  var ownPlayerSpriteSheet;
+
   // Define sprite sheet for player figure, with all animations
-  var playerSpriteSheet = new createjs.SpriteSheet({
-    images: ["images/player.png"],
-    frames: {width: 32, height: 50, regX: 16, regY: 25, count: 16},
-    animations: {
-      "standdown": 0,
-      "standleft": 4,
-      "standright": 8,
-      "standup": 12,
-      "down": [1, 3, "standdown", 0.4],
-      "left": [5, 7, "standleft", 0.4],
-      "right": [9, 11, "standright", 0.4],
-      "up": [13, 15, "standup", 0.4]
-    }
-  });
+  function createSprites() {
+    var bmp = new createjs.Bitmap(img);
+    bmp.filters =  [Grayscale];
+    bmp.cache(0,0,img.width,img.height);
+
+
+    playerSpriteSheet = createSprite(bmp.cacheCanvas);
+    ownPlayerSpriteSheet = createSprite(img);
+  }
+  function createSprite(image) {
+    return new createjs.SpriteSheet({
+      "images": [image],
+      frames: {width: 32, height: 50, regX: 16, regY: 25, count: 16},
+      animations: {
+        "standdown": 0,
+        "standleft": 4,
+        "standright": 8,
+        "standup": 12,
+        "down": [1, 3, "standdown", 0.4],
+        "left": [5, 7, "standleft", 0.4],
+        "right": [9, 11, "standright", 0.4],
+        "up": [13, 15, "standup", 0.4]
+      }
+    });
+  }
+
+
+
 
   /*
    Class Player
@@ -59,12 +89,12 @@ $(function () {
    from the 'players' map. Called when other players leave.
 
    */
-  function Player(id, xpos, ypos, username, room) {
+  function Player(id, xpos, ypos, username, room, sprite) {
     if (id === undefined) return;
     this.id = id;
     this.room = room;
     this.username = username;
-    this.shape = new createjs.Sprite(playerSpriteSheet, "standdown");
+    this.shape = new createjs.Sprite(sprite, "standdown");
     this.shape.player = this;
     stage.addChild(this.shape);
     this.setPos(xpos, ypos);
@@ -139,7 +169,7 @@ $(function () {
    */
   function OwnPlayer(id, xpos, ypos, username, room) {
     this.base = Player;
-    this.base(id, xpos, ypos, username, room); // Call superclass constructor
+    this.base(id, xpos, ypos, username, room, ownPlayerSpriteSheet); // Call superclass constructor
 
     // Setup mouse handlers
     this.shape.on("mousedown", function (evt) {
@@ -198,7 +228,7 @@ $(function () {
     if (newPos.id in players) {
       players[newPos.id].moveTo(newPos.x, newPos.y);
     } else {
-      players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username, newPos.room);
+      players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username, newPos.room, playerSpriteSheet);
       announceArrival(newPos.username);
     }
 
