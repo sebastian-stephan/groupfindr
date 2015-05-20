@@ -66,13 +66,15 @@ block content
                 .col-md-7
                     canvas#mycanvas(width='1000', height='1000', style='width:100%')
                         | Your browser does not support canvas.
-                .col-md-3
-                    h3 Chat
-                    ul(class="chat",id="chatlist")
-                    .input-group
-                        input(type="text",class="form-control",id="chatinput")
-                        span(class="input-group-btn")
-                            button(type="button",class="btn btn-primary", id="chatbutton") Enter
+                .chat-box
+                    input(type="checkbox")
+                    label(data-expanded="Close Chatbox" data-collapsed="Open Chatbox")
+                    .chat-box-content
+                        ul(class="chat",id="chatlist")
+                        .input-group
+                            input(type="text",class="form-control",id="chatinput", style="font-size:10px;" )
+                            span(class="input-group-btn")
+                                button(type="button",class="btn btn-primary", id="chatbutton") Enter
 
 
 
