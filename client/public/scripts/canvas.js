@@ -437,6 +437,9 @@ $(function () {
    *  Login Formula clicked: Hide form, show canvas and create new game object.
    *  */
   $('#joinform').submit(function (e) {
+    //remove title to gain more vertical space
+    $('#title').hide();
+
     e.preventDefault();
     var param = {};
     param.username = $('#username').val();
