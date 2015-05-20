@@ -102,7 +102,7 @@ $(function () {
       }
 
       // Disallow escaping from the canvas
-      if(xpos > 0 && xpos < 600 && ypos > 0 && ypos < 600 ){
+      if(xpos > 0 && xpos < 1000 && ypos > 0 && ypos < 1000 ){
         this.setPos(xpos, ypos);
       }
 
@@ -357,7 +357,7 @@ $(function () {
   };
 
   var announceLeaveGroup = function (username, group) {
-      $('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' left the group ' + group + '</li>');
+      //$('#chatlist').append('<li tabindex="1"><p class="triangle-obtuse top">' + username + ' left the group ' + group + '</li>');
       $('li').last().focus();
       $('#chatinput').focus();
   };
