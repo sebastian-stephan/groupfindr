@@ -158,6 +158,9 @@ $(function () {
     },
     removePlayer: function (playerID){
       delete this.players[playerID];
+    },
+    countPlayers: function(){
+      return Object.keys(this.players).length;
     }
   };
   /*
@@ -252,8 +255,7 @@ $(function () {
 
     // Create the DOM for Groups
     var list = $('<li>', {
-      class: 'list-group-item',
-      "id": group.name
+      class: 'list-group-item'
     });
     var title = $('<h5>', {
       text: group.name
@@ -282,14 +284,9 @@ $(function () {
       socket.emit('deletegroup', groupinfo);
     });
 
-
-
     title.append(tooltip);
     title.append(deleteicon);
     list.append(title);
-
-
-
 
     list.append($('<ul>', {
       class: 'group-members',
@@ -321,6 +318,7 @@ $(function () {
         id: info.id,
         text: getUsernameById(info.id)
       }));
+      $('#' + groupname).find(".deletegroup").hide();
     }
 
     // Add Player to Group Object
@@ -357,6 +355,10 @@ $(function () {
     var group = groups[groupname];
     if (group) {
       group.removePlayer(info.id);
+    }
+    // only show delete button in case there is no player in the group
+    if(group.countPlayers() == 0){
+      $('#' + groupname).find(".deletegroup").show();
     }
   });
 
