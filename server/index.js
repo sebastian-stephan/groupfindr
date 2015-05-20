@@ -110,6 +110,11 @@ app.init = function (server) {
       app.io.to(data.roomname).emit('groupcreated', newGroup);
 
     });
+    // Delete group, data includes roomname and groupname
+    socket.on('deletegroup', function (data) {
+      var currentRoom = socket.adapter.rooms[data.roomname];
+      delete currentRoom.groups[data.groupname];
+    });
 
     /* When a user logs in */
     socket.on('login', function (data) {
