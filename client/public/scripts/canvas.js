@@ -267,9 +267,9 @@ $(function () {
     });
 
     var deleteicon = $('<span>', {
-      class: 'glyphicon glyphicon-remove',
+      class: 'glyphicon glyphicon-remove deletegroup',
       'aria-hidden': 'true',
-      id:"deletegroup",
+      'onclick': "deleteGroup('"+ownPlayer.room+"', '"+group.name+"')",
       'data-placement': 'right'
     });
 
@@ -287,6 +287,7 @@ $(function () {
     $('#grouplist').append(list);
     // Initialize tooltip
     $('[data-toggle="tooltip"]').tooltip();
+
   });
 
   socket.on('joinedgroup', function (info) {
@@ -370,12 +371,7 @@ $(function () {
     console.log('get group2');
   });
 
-  /*delete group*/
-  $('#deletegroup').click(function () {
-    console.log('delete group');
-    /*socket.emit('getgroups');
-    console.log('get group2');*/
-  });
+
 
   /**
    * Incoming socket call: called when a player leaves. Removes him
@@ -504,5 +500,7 @@ $(function () {
     });
   });
 
-
 });
+function deleteGroup(roomname, groupname){
+  console.log("roomname "+ roomname +" groupnae: "+ groupname );
+}
