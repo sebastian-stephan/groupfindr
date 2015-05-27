@@ -33,17 +33,14 @@ block content
                             h5 Not Yet Assigned
                             ul#default.group-members
 
-
-
-                    button.btn.btn-info.btn-lg(type="button", data-toggle='modal', data-target="#createGroupModal") Open Modal
                 .col-sm-8
                     div#canvas-wrap
                         canvas#mycanvas(width='1000', height='1000', style='width:100%')
                             | Your browser does not support canvas.
                         div#overlay
                             // CREATE GROUP BUTTON
-                            a(href='#')
-                                #createGroupButton.round-button-circle
+                            a(href='#', data-toggle='modal', data-target="#createGroupModal")
+                                #redButton.round-button-circle
                 .chat-box
                     input(type="checkbox")
                     label(data-expanded="Close Chatbox" data-collapsed="Open Chatbox")
@@ -68,7 +65,7 @@ block content
                                 label.control-label(for='groupDescription') Description
                                 input.form-control#groupDescription.input-xlarge(name='groupDescription', type='text', placeholder='Description', required='')
                         div.modal-footer
-                            button.btn.btn-default(type="button", data-dismiss="modal") Create!
+                            button.btn.btn-default#createGroupButton(type="button", data-dismiss="modal") Create!
 
         script(src='/scripts/socket.io.min.js')
         script(src='/scripts/canvas.js')
