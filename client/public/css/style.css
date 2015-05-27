@@ -33,6 +33,29 @@ ul.group-members {
 span.glyphicon.glyphicon-info-sign {
     margin-left: 5px;
 }
+span.glyphicon.glyphicon-remove.deletegroup {
+    font-size: 20px;
+    color: red;
+    right: 10px;
+    position: absolute;
+    top: 10px;
+}
+
+.round-button-circle {
+    display: none;
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    right: 300px;
+    bottom: 7px;
+    border-radius: 50%;
+    overflow:hidden;
+    background: red;
+    box-shadow: 0 0 7px gray;
+}
+.round-button-circle:hover {
+    background:darkred;
+}
 
 /* Display list in two columns */
 ul.group-members li {
@@ -40,6 +63,19 @@ ul.group-members li {
     display: inline;
     width: 50%;
     overflow: hidden;
+}
+ol.group-members li {
+    font-size: smaller;
+}
+hr.group-hr{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+li.list-group-item p.text-muted {
+    font-size: smaller;
+}
+li.list-group-item h5 {
+    color: #0084d1;
 }
 
 /* END GROUP INFO */

@@ -7,7 +7,6 @@ $(function () {
   var stage = new createjs.Stage('mycanvas');
 
 
-
   var update = true;  // Whenever we set this to true, in the next tick
                       // the stage will be updated. This way we only update
                       // the canvas if there is a change.
@@ -56,7 +55,7 @@ $(function () {
   function createSprite(image) {
     return new createjs.SpriteSheet({
       "images": [image],
-      frames: {width: 32, height: 50, regX: 16, regY: 25, count: 16},
+      frames: {width: 64, height: 100, regX: 32, regY: 50, count: 16},
       animations: {
         "standdown": 0,
         "standleft": 4,
@@ -267,18 +266,17 @@ $(function () {
     // Create the DOM for Groups
     var list = $('<li>', {
       class: 'list-group-item',
-      "id": group.name
+      "id": groupname
     });
     var title = $('<h5>', {
-      text: group.name
+      text: 'Group: ' + group.name
     });
-
-    var tooltip = $('<span>', {
-      class: 'glyphicon glyphicon-info-sign',
-      'aria-hidden': 'true',
-      title: group.description,
-      'data-toggle': 'tooltip',
-      'data-placement': 'right'
+    var pmembers = $('<p>', {
+      text: 'Members: '
+    });
+    var desc = $('<p>', {
+      class: 'text-muted',
+      text: group.description
     });
 
     var deleteicon = $('<span>', {
@@ -296,11 +294,12 @@ $(function () {
       socket.emit('deletegroup', groupinfo);
     });
 
-    title.append(tooltip);
-    title.append(deleteicon);
+    list.append(deleteicon);
     list.append(title);
-
-    list.append($('<ul>', {
+    list.append(desc);
+    list.append($('<hr>', {class: 'group-hr'}));
+    list.append(pmembers);
+    list.append($('<ol>', {
       class: 'group-members',
       id: groupname
     }));
@@ -326,7 +325,7 @@ $(function () {
       // Remove Player from default Group
       $('#default').find('#' + info.id).remove();
       // Add Player to Group
-      $('ul#' + groupname).append($('<li>', {
+      $('ol#' + groupname).append($('<li>', {
         id: info.id,
         text: getUsernameById(info.id)
       }));
@@ -355,7 +354,7 @@ $(function () {
     announceLeaveGroup(info.username,groupname)
 
     // Remove username from group
-    $('ul#' + groupname).find('#' + info.id).remove();
+    $('ol#' + groupname).find('#' + info.id).remove();
 
     // Add Player to default
     $('#default').append($('<li>', {
@@ -519,8 +518,9 @@ $(function () {
     param.y = 500;
     socket.emit('login', param);
     $('#joinform').hide("fade", function () { //hide login form and show canvas and sidepanels
-      $('#mycanvas').fadeIn(200);
-      $('.row').fadeIn(200);
+       $('#mycanvas').fadeIn(200);
+       $('#createGroupButton').fadeIn(200);
+       $('.row').fadeIn(200);
       ownPlayer = new OwnPlayer(socket.id, param.x, param.y, param.username, param.room);
       players[ownPlayer.id] = ownPlayer; // Save game object in global map of player objects.
     });
