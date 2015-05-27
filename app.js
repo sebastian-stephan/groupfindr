@@ -2,6 +2,7 @@
  * groupfindr
  */
 var express = require('express')
+  , routes = require('./routes')
   , path = require('path')
   , logger = require('morgan')
   , http = require('http')
@@ -19,9 +20,9 @@ if (app.get('env') == 'development') {
 }
 
 // Main routes
-app.get('/', function(req, res){
-  res.render('virtualroom', { title: 'groupfindr' });
-});
+app.get('/', routes.index);
+app.get('/about', routes.about);
+app.get('/virtualroom', routes.chat);
 
 var server = http.createServer(app);
 socketserver.init(server);
