@@ -11,18 +11,12 @@ block content
                     label.control-label(for='username') Username
                     .controls
                         input#username.input-xlarge(name='username', type='text', placeholder='Enter username', required='')
-                // Room name
-                //.control-group
-                    label.control-label(for='room') Room
-                    .controls
-                        input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='')
                 // Room name advanced
                 .control-group
                     label.control-label(for='room') Room
                     .controls
                         input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='', list='rooms', autocomplete='off')
                         datalist#rooms
-
                 // Join Button
                 .control-group
                     label.control-label(for='joinbutton')
@@ -30,25 +24,9 @@ block content
                         button#joinbutton.btn.btn-primary(type='submit') Join
         .container
             .row
-                .col-sm-2
+                .col-sm-4
                     h3 Group Info
                     ul#grouplist.list-group
-                        //li#g1.list-group-item
-                            h5 Group 1
-                                span.glyphicon.glyphicon-info-sign(aria-hidden='true', data-toggle='tooltip' data-placement='right' title='Title, Subject or any other information')
-                            ul.group-members
-                                //li One
-                                //li Two
-                                //li Three
-
-                        //li#g2.list-group-item
-                            h5 Group 2
-                                span.glyphicon.glyphicon-info-sign(aria-hidden='true', data-toggle='tooltip' data-placement='right' title='Title, Subject or any other information')
-                            ul.group-members
-                                li One
-                                li Two
-                                li Three
-                                li Fou
                     ul.list-group
                         li.list-group-item
                             h5 Not Yet Assigned
