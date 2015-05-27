@@ -1,83 +1,54 @@
 extends layout
 
+block scripts
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/jquery-ui.css')
+    link(rel='styleSheet', href='/css/bubbles.css')
+    link(rel='styleSheet', href='/css/chat.css')
+    link(rel='styleSheet', href='/css/style.css')
+    link(rel="stylesheet", href='/css/font-awesome.min.css')
+    script(src='/scripts/jquery.min.js')
+    script(src='/scripts/jquery-ui.min.js')
+    script(src='/scripts/easeljs-0.8.0.min.js')
+    script(src='/scripts/socket.io.min.js')
+    script(src='/scripts/canvas.js')
+    script(src='/scripts/virtualroom.js')
+
 block content
-    div.container
-        h1 #{title}
+    // FORM
+    form#joinform.form-horizontal(action='')
+        fieldset
+            .control-group
+                label.control-label(for='username') Username
+                .controls
+                    input#username.input-xlarge(name='username', type='text', placeholder='Enter username', required='')
+            .control-group
+                label.control-label(for='room') Room
+                .controls
+                    input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='', list='rooms', autocomplete='off')
+                    datalist#rooms
+            .control-group
+                label.control-label(for='joinbutton')
+                .controls
+                    button#joinbutton.btn.btn-primary(type='submit') Join
 
-        form#joinform.form-horizontal(action='')
-            fieldset
-                // Username
-                .control-group
-                    label.control-label(for='username') Username
-                    .controls
-                        input#username.input-xlarge(name='username', type='text', placeholder='Enter username', required='')
-                // Room name
-                //.control-group
-                    label.control-label(for='room') Room
-                    .controls
-                        input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='')
-                // Room name advanced
-                .control-group
-                    label.control-label(for='room') Room
-                    .controls
-                        input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='', list='rooms', autocomplete='off')
-                        datalist#rooms
+    // CANVAS
+    canvas#mycanvas(width='1000', height='1000')
+        | Your browser does not support canvas.
 
-                // Join Button
-                .control-group
-                    label.control-label(for='joinbutton')
-                    .controls
-                        button#joinbutton.btn.btn-primary(type='submit') Join
-        .container
-            .row
-                .col-md-2
-                    h3 Group Info
-                    ul#grouplist.list-group
-                        //li#g1.list-group-item
-                            h5 Group 1
-                                span.glyphicon.glyphicon-info-sign(aria-hidden='true', data-toggle='tooltip' data-placement='right' title='Title, Subject or any other information')
-                            ul.group-members
-                                //li One
-                                //li Two
-                                //li Three
-
-                        //li#g2.list-group-item
-                            h5 Group 2
-                                span.glyphicon.glyphicon-info-sign(aria-hidden='true', data-toggle='tooltip' data-placement='right' title='Title, Subject or any other information')
-                            ul.group-members
-                                li One
-                                li Two
-                                li Three
-                                li Fou
-                    ul.list-group
-                        li.list-group-item
-                            h5 Not Yet Assigned
-                            ul#default.group-members
-
-                    h3 Create group
-                    input#groupName.input-xlarge(name='groupName', type='text', placeholder='Name')
-                    input#groupDescription.input-xlarge(name='groupDescription', type='text', placeholder='Description')
-                    button#createGroupButton.btn.btn-primary(type='submit') create group
-
-                    h3 Delete group
-
-                    button#getGroupsButton.btn.btn-primary(type='submit') get groups
-
-                .col-md-10
-                    canvas#mycanvas(width='1000', height='1000', style='width:100%')
-                        | Your browser does not support canvas.
-                .chat-box
-                    input(type="checkbox")
-                    label(data-expanded="Close Chatbox" data-collapsed="Open Chatbox")
-                    .chat-box-content
-                        ul(class="chat",id="chatlist")
-                        .input-group
-                            input(type="text",class="form-control",id="chatinput", style="font-size:10px;" )
-                            span(class="input-group-btn")
-                                button(type="button",class="btn btn-primary", id="chatbutton") Enter
+    // CHAT
+    .chat-box
+            input(type="checkbox")
+            label(data-expanded="Close Chatbox" data-collapsed="Open Chatbox")
+            .chat-box-content
+                ul(class="chat",id="chatlist")
+                .input-group
+                    input(type="text",class="form-control",id="chatinput", style="font-size:10px;" )
+                    span(class="input-group-btn")
+                        button(type="button",class="btn btn-primary", id="chatbutton") Enter
 
 
+    // JOIN BUTTON
+    a(href='#')
+        #createGroupButton.round-button-circle
 
-        script(src='/scripts/socket.io.min.js')
-        script(src='/scripts/canvas.js')
-        script(src='/scripts/virtualroom.js')
