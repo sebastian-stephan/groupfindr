@@ -74,5 +74,8 @@ hr.group-hr{
 li.list-group-item p.text-muted {
     font-size: smaller;
 }
+li.list-group-item h5 {
+    color: #0084d1;
+}
 
 /* END GROUP INFO */

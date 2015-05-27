@@ -7,7 +7,6 @@ $(function () {
   var stage = new createjs.Stage('mycanvas');
 
 
-
   var update = true;  // Whenever we set this to true, in the next tick
                       // the stage will be updated. This way we only update
                       // the canvas if there is a change.
