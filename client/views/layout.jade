@@ -7,16 +7,37 @@ html
             block meta
                 meta(name='description', content='')
                 meta(name='keywords', content='')
+
+            // JQuery
+            script(src='/scripts/jquery.min.js')
+
+            // JQuery UI
+            link(rel='stylesheet', href='/css/jquery-ui.css')
+            script(src='/scripts/jquery-ui.min.js')
+
+            // Bootstrap
             link(rel='stylesheet', href='/css/bootstrap.min.css')
             | <style>
             |   body { padding-top: 10px; }
             | </style>
-            script(src='/scripts/jquery.min.js')
-            link(rel='stylesheet', href='/css/jquery-ui.css')
+            script(src='/scripts/bootstrap.min.js')
+
+            // Chat design
             link(rel='styleSheet', href='/css/bubbles.css')
             link(rel='styleSheet', href='/css/chat.css')
-            script(src='/scripts/jquery-ui.min.js')
+
+            // Socket.io
+            script(src='/scripts/socket.io.min.js')
+
+            // Easel.js (Game engine)
             script(src='/scripts/easeljs-0.8.0.min.js')
+
+            // App specific CSS
+            link(rel='stylesheet', href='/css/style.css')
+
+            // App specific scripts
+            script(src='/scripts/canvas.js')
+            script(src='/scripts/virtualroom.js')
     body
         block content
 
