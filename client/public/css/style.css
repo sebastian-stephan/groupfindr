@@ -1,5 +1,15 @@
-#mycanvas {
+#canvas-wrap,
+#mycanvas{
+    width: 100%;
+    max-width: 85vmin;
+    max-height: 85vmin;
+}
+
+#canvas-wrap {
     display: none;
+}
+
+#mycanvas {
     background-color: #ffd700;
     border-radius: 20px;
 }
