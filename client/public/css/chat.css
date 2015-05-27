@@ -1,7 +1,7 @@
 .chat-box {
     font:normal normal 11px/1.4 Tahoma,Verdana,Sans-Serif;
     color:#333;
-    width:200px; /* Chatbox width */
+    width:350px; /* Chatbox width */
     border:1px solid #344150;
     border-bottom:none;
     background-color:white;
