@@ -174,6 +174,23 @@ $(function () {
     },
     countPlayers: function(){
       return Object.keys(this.players).length;
+    },
+    remove: function(){
+      // Remove from sidebar
+      $('#'+this.name).remove();
+
+      // Remove from canvas
+      groupsContainer.removeChild(this.groupShape);
+
+      // Announce to others
+      var groupinfo = {
+        roomname: this.room,
+        groupname: this.name
+      }
+      socket.emit('deletegroup', groupinfo);
+
+      // Try to delete itself (might not work?)
+      delete groups[this.name];
     }
   };
   /*
@@ -275,8 +292,9 @@ $(function () {
     groupsContainer.addChild(container);
 
     groups[groupname] = new Group(group.name, group.description, group.roomname, group.groupPos, container);
+    var groupObject = groups[groupname];
 
-    stage.update();
+    //stage.update();
 
     // Create the DOM for Groups
     var list = $('<li>', {
@@ -299,14 +317,7 @@ $(function () {
       'aria-hidden': 'true',
       'data-placement': 'right'
     }).click(function() {
-      //remove in frontend
-      $('#'+group.name).remove();
-      groups[group.name]= null;
-      var groupinfo = {
-        roomname: group.roomname,
-        groupname: group.name
-      }
-      socket.emit('deletegroup', groupinfo);
+      groupObject.remove();
     });
 
     list.append(deleteicon);
