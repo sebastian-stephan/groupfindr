@@ -242,15 +242,26 @@ $(function () {
     var groupname = group.name.replace(/\s/g, '');
     groups[groupname] = new Group(group.name, group.description, group.roomname);
 
-    var groupRadius = 100;
+    var groupRadius = 125;
 
-    var groupCloud  = new createjs.Bitmap("images/cloud.png")
-    groupCloud.scaleX = 2
-    groupCloud.scaleY = 2;
+    // add ugly grey rectangle
+    var rect = new createjs.Shape();
+    rect.graphics.beginFill('grey');
+    rect.graphics.drawRect(0, 0, groupRadius*2, groupRadius*2);
+    rect.graphics.endFill();
+    rect.x = group.groupPos.x - groupRadius;
+    rect.y = group.groupPos.y - groupRadius;
+    rect.height = groupRadius*2;
+    rect.width = groupRadius*2;
 
-    groupCloud.x = group.groupPos.x -groupRadius;
-    groupCloud.y = group.groupPos.y -groupRadius;
-    stage.addChildAt(groupCloud,0);
+    stage.addChild(rect);
+
+    // add group name
+    var text = new createjs.Text(groupname, "20px Arial", 'white');
+    text.x = rect.x + 5;
+    text.y = rect.y + 5;
+    stage.addChild(text);
+
     stage.update();
 
     // Create the DOM for Groups
