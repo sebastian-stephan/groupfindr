@@ -259,15 +259,14 @@ $(function () {
       "id": group.name
     });
     var title = $('<h5>', {
-      text: group.name
+      text: 'Group: ' + group.name
     });
-
-    var tooltip = $('<span>', {
-      class: 'glyphicon glyphicon-info-sign',
-      'aria-hidden': 'true',
-      title: group.description,
-      'data-toggle': 'tooltip',
-      'data-placement': 'right'
+    var pmembers = $('<p>', {
+      text: 'Members: '
+    });
+    var desc = $('<p>', {
+      class: 'text-muted',
+      text: group.description
     });
 
     var deleteicon = $('<span>', {
@@ -285,11 +284,12 @@ $(function () {
       socket.emit('deletegroup', groupinfo);
     });
 
-    title.append(tooltip);
-    title.append(deleteicon);
+    list.append(deleteicon);
     list.append(title);
-
-    list.append($('<ul>', {
+    list.append(desc);
+    list.append($('<hr>', {class: 'group-hr'}));
+    list.append(pmembers);
+    list.append($('<ol>', {
       class: 'group-members',
       id: groupname
     }));
@@ -315,7 +315,7 @@ $(function () {
       // Remove Player from default Group
       $('#default').find('#' + info.id).remove();
       // Add Player to Group
-      $('ul#' + groupname).append($('<li>', {
+      $('ol#' + groupname).append($('<li>', {
         id: info.id,
         text: getUsernameById(info.id)
       }));
@@ -344,7 +344,7 @@ $(function () {
     announceLeaveGroup(info.username,groupname)
 
     // Remove username from group
-    $('ul#' + groupname).find('#' + info.id).remove();
+    $('ol#' + groupname).find('#' + info.id).remove();
 
     // Add Player to default
     $('#default').append($('<li>', {

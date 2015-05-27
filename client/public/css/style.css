@@ -32,6 +32,13 @@ ul.group-members {
 span.glyphicon.glyphicon-info-sign {
     margin-left: 5px;
 }
+span.glyphicon.glyphicon-remove.deletegroup {
+    font-size: 20px;
+    color: red;
+    right: 10px;
+    position: absolute;
+    top: 10px;
+}
 
 /* Display list in two columns */
 ul.group-members li {
@@ -39,6 +46,16 @@ ul.group-members li {
     display: inline;
     width: 50%;
     overflow: hidden;
+}
+ol.group-members li {
+    font-size: smaller;
+}
+hr.group-hr{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+li.list-group-item p.text-muted {
+    font-size: smaller;
 }
 
 /* END GROUP INFO */
