@@ -165,7 +165,7 @@ app.init = function (server) {
         socket.emit('groupcreated', group);
       }
 
-      // for all players(socket objects) in room
+      // Let the joining player know which players are in which groups
       for (var socketId in room) {
         // only socketIds, no groups property
           if(typeof room[socketId] != 'object'){
@@ -173,10 +173,11 @@ app.init = function (server) {
             // check if player is in a group
             if(usr.roomdata[data.room].mygroup){
               var group = usr.roomdata[data.room].mygroup;
-              // if player has room: emit('joinedroom', data)
-              app.io.to(data.room).emit('joinedgroup', {id: socketId, name: group.name, username: usr.username});
+              // Player (socketId) is in a group. Inform the joining player (socket) about this
+              socket.emit('joinedgroup', {id: socketId, name: group.name, username: usr.username});
             }else{
-              app.io.to(data.room).emit('joinedgroup', {id: socketId, name: 'default',username: usr.username, addDefault: true});
+              // Player (socketId) is in the default group. Inform the joining player (socket) about this
+              socket.emit('joinedgroup', {id: socketId, name: 'default',username: usr.username, addDefault: true});
             }
           }
       }
