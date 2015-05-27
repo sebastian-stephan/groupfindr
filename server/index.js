@@ -8,7 +8,7 @@ app.init = function (server) {
   var canvasWidth = 1000;
   var canvasHeight = 1000;
 
-  var groupRadius = 100;
+  var groupRadius = 125;
   var groupPositions = [
     {
       x: 0 + groupRadius,
@@ -25,6 +25,22 @@ app.init = function (server) {
     {
       x: 0 + groupRadius,
       y: canvasHeight - groupRadius
+    },
+    {
+      x: canvasWidth/2,
+      y: 0 + groupRadius
+    },
+    {
+      x: canvasWidth - groupRadius,
+      y: canvasHeight/2
+    },
+    {
+      x: canvasWidth/2,
+      y: canvasHeight - groupRadius
+    },
+    {
+      x: 0 + groupRadius,
+      y: canvasHeight/2
     }
   ];
 
@@ -63,8 +79,9 @@ app.init = function (server) {
   function getGroup(room, x, y) {
     for (var groupname in room.groups) {
       var group = room.groups[groupname];
-      var distance = Math.sqrt(Math.pow(group.groupPos.x - x, 2) + Math.pow(group.groupPos.y - y, 2));
-      if (distance <= groupRadius) {
+      var inX = group.groupPos.x - groupRadius < x && group.groupPos.x + groupRadius > x;
+      var inY = group.groupPos.y - groupRadius < y && group.groupPos.y + groupRadius > y;
+      if (inX && inY) {
         return group;
       }
     }
@@ -109,6 +126,11 @@ app.init = function (server) {
       // Send information about new group to all players in room
       app.io.to(data.roomname).emit('groupcreated', newGroup);
 
+    });
+    // Delete group, data includes roomname and groupname
+    socket.on('deletegroup', function (data) {
+      var currentRoom = socket.adapter.rooms[data.roomname];
+      delete currentRoom.groups[data.groupname];
     });
 
     /* When a user logs in */

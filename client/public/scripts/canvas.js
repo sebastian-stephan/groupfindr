@@ -27,21 +27,51 @@ $(function () {
     }
   });
 
+
+  var Grayscale = new createjs.ColorMatrixFilter([
+    0.30,0.30,0.30,0,0, // red component
+    0.30,0.30,0.30,0,0, // green component
+    0.30,0.30,0.30,0,0, // blue component
+    0,0,0,1,0  // alpha
+  ]);
+
+  // Preload the image
+  var img = document.createElement("img");
+  img.src = "images/player.png";
+  img.onload = createSprites;
+
+  var playerSpriteSheet;
+  var ownPlayerSpriteSheet;
+
   // Define sprite sheet for player figure, with all animations
-  var playerSpriteSheet = new createjs.SpriteSheet({
-    images: ["images/player.png"],
-    frames: {width: 32, height: 50, regX: 16, regY: 25, count: 16},
-    animations: {
-      "standdown": 0,
-      "standleft": 4,
-      "standright": 8,
-      "standup": 12,
-      "down": [1, 3, "standdown", 0.4],
-      "left": [5, 7, "standleft", 0.4],
-      "right": [9, 11, "standright", 0.4],
-      "up": [13, 15, "standup", 0.4]
-    }
-  });
+  function createSprites() {
+    var bmp = new createjs.Bitmap(img);
+    bmp.filters =  [Grayscale];
+    bmp.cache(0,0,img.width,img.height);
+
+
+    playerSpriteSheet = createSprite(bmp.cacheCanvas);
+    ownPlayerSpriteSheet = createSprite(img);
+  }
+  function createSprite(image) {
+    return new createjs.SpriteSheet({
+      "images": [image],
+      frames: {width: 32, height: 50, regX: 16, regY: 25, count: 16},
+      animations: {
+        "standdown": 0,
+        "standleft": 4,
+        "standright": 8,
+        "standup": 12,
+        "down": [1, 3, "standdown", 0.4],
+        "left": [5, 7, "standleft", 0.4],
+        "right": [9, 11, "standright", 0.4],
+        "up": [13, 15, "standup", 0.4]
+      }
+    });
+  }
+
+
+
 
   /*
    Class Player
@@ -59,12 +89,12 @@ $(function () {
    from the 'players' map. Called when other players leave.
 
    */
-  function Player(id, xpos, ypos, username, room) {
+  function Player(id, xpos, ypos, username, room, sprite) {
     if (id === undefined) return;
     this.id = id;
     this.room = room;
     this.username = username;
-    this.shape = new createjs.Sprite(playerSpriteSheet, "standdown");
+    this.shape = new createjs.Sprite(sprite, "standdown");
     this.shape.player = this;
     stage.addChild(this.shape);
     this.setPos(xpos, ypos);
@@ -90,7 +120,6 @@ $(function () {
     moveTo: function (xpos, ypos) {
       var oldx = this.shape.x;
       var oldy = this.shape.y;
-      console.log(xpos);
       if (xpos - oldx > 0) {                       // Moved right
         this.playIfNotPlaying("right");
       } else if (xpos - oldx < 0) {                // Moved left
@@ -129,6 +158,9 @@ $(function () {
     },
     removePlayer: function (playerID){
       delete this.players[playerID];
+    },
+    countPlayers: function(){
+      return Object.keys(this.players).length;
     }
   };
   /*
@@ -140,7 +172,7 @@ $(function () {
    */
   function OwnPlayer(id, xpos, ypos, username, room) {
     this.base = Player;
-    this.base(id, xpos, ypos, username, room); // Call superclass constructor
+    this.base(id, xpos, ypos, username, room, ownPlayerSpriteSheet); // Call superclass constructor
 
     // Setup mouse handlers
     this.shape.on("mousedown", function (evt) {
@@ -199,7 +231,7 @@ $(function () {
     if (newPos.id in players) {
       players[newPos.id].moveTo(newPos.x, newPos.y);
     } else {
-      players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username, newPos.room);
+      players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username, newPos.room, playerSpriteSheet);
       announceArrival(newPos.username);
     }
 
@@ -223,7 +255,8 @@ $(function () {
 
     // Create the DOM for Groups
     var list = $('<li>', {
-      class: 'list-group-item'
+      class: 'list-group-item',
+      "id": group.name
     });
     var title = $('<h5>', {
       text: group.name
@@ -236,7 +269,24 @@ $(function () {
       'data-toggle': 'tooltip',
       'data-placement': 'right'
     });
+
+    var deleteicon = $('<span>', {
+      class: 'glyphicon glyphicon-remove deletegroup',
+      'aria-hidden': 'true',
+      'data-placement': 'right'
+    }).click(function() {
+      //remove in frontend
+      $('#'+group.name).remove();
+      groups[group.name]= null;
+      var groupinfo = {
+        roomname: group.roomname,
+        groupname: group.name
+      }
+      socket.emit('deletegroup', groupinfo);
+    });
+
     title.append(tooltip);
+    title.append(deleteicon);
     list.append(title);
 
     list.append($('<ul>', {
@@ -246,7 +296,9 @@ $(function () {
     $('#grouplist').append(list);
     // Initialize tooltip
     $('[data-toggle="tooltip"]').tooltip();
+
   });
+
 
   socket.on('joinedgroup', function (info) {
     var groupname = info.name.replace(/\s/g, '');
@@ -263,10 +315,11 @@ $(function () {
       // Remove Player from default Group
       $('#default').find('#' + info.id).remove();
       // Add Player to Group
-      $('#' + groupname).append($('<li>', {
+      $('ul#' + groupname).append($('<li>', {
         id: info.id,
         text: getUsernameById(info.id)
       }));
+      $('#' + groupname).find(".deletegroup").hide();
     }
 
     // Add Player to Group Object
@@ -291,7 +344,7 @@ $(function () {
     announceLeaveGroup(info.username,groupname)
 
     // Remove username from group
-    $('#' + groupname).find('#' + info.id).remove();
+    $('ul#' + groupname).find('#' + info.id).remove();
 
     // Add Player to default
     $('#default').append($('<li>', {
@@ -303,6 +356,10 @@ $(function () {
     var group = groups[groupname];
     if (group) {
       group.removePlayer(info.id);
+    }
+    // only show delete button in case there is no player in the group
+    if(group.countPlayers() == 0){
+      $('#' + groupname).find(".deletegroup").show();
     }
   });
 
@@ -328,6 +385,8 @@ $(function () {
     socket.emit('getgroups');
     console.log('get group2');
   });
+
+
 
   /**
    * Incoming socket call: called when a player leaves. Removes him
@@ -438,6 +497,9 @@ $(function () {
    *  Login Formula clicked: Hide form, show canvas and create new game object.
    *  */
   $('#joinform').submit(function (e) {
+    //remove title to gain more vertical space
+    $('#title').hide();
+
     e.preventDefault();
     var param = {};
     param.username = $('#username').val();
@@ -452,6 +514,5 @@ $(function () {
       players[ownPlayer.id] = ownPlayer; // Save game object in global map of player objects.
     });
   });
-
 
 });

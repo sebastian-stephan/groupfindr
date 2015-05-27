@@ -2,7 +2,7 @@ extends layout
 
 block content
     div.container
-        h1 #{title}
+        h1#title #{title}
 
         form#joinform.form-horizontal(action='')
             fieldset
@@ -30,7 +30,7 @@ block content
                         button#joinbutton.btn.btn-primary(type='submit') Join
         .container
             .row
-                .col-md-2
+                .col-sm-2
                     h3 Group Info
                     ul#grouplist.list-group
                         //li#g1.list-group-item
@@ -63,7 +63,7 @@ block content
 
                     button#getGroupsButton.btn.btn-primary(type='submit') get groups
 
-                .col-md-10
+                .col-sm-8
                     canvas#mycanvas(width='1000', height='1000', style='width:100%')
                         | Your browser does not support canvas.
                 .chat-box
