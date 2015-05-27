@@ -33,11 +33,12 @@ block content
                             h5 Not Yet Assigned
                             ul#default.group-members
 
-                    h3 Create group
-                    input#groupName.input-xlarge(name='groupName', type='text', placeholder='Name')
-                    input#groupDescription.input-xlarge(name='groupDescription', type='text', placeholder='Description')
-                    button#createGroupButton.btn.btn-primary(type='submit') create group
+                    //h3 Create group
+                    //input#groupName.input-xlarge(name='groupName', type='text', placeholder='Name')
+                    //input#groupDescription.input-xlarge(name='groupDescription', type='text', placeholder='Description')
+                    //button#createGroupButton.btn.btn-primary(type='submit') create group
 
+                    button.btn.btn-info.btn-lg(type="button", data-toggle='modal', data-target="#createGroupModal") Open Modal
                 .col-sm-8
                     canvas#mycanvas(width='1000', height='1000', style='width:100%')
                         | Your browser does not support canvas.
@@ -50,9 +51,28 @@ block content
                             input(type="text",class="form-control",id="chatinput", style="font-size:10px;" )
                             span(class="input-group-btn")
                                 button(type="button",class="btn btn-primary", id="chatbutton") Enter
+            // Modal
+            div.modal.fade(id="createGroupModal", role="dialog")
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            button.close(type="button", data-dismiss="modal") &times;
+                            h4.modal-title Create Group
+                        div.modal-body
+                            div.form-group
+                                label.control-label(for='groupName') Name
+                                input.form-control#groupName.input-xlarge(name='groupName', type='text', placeholder='Name', required='')
+                            div.form-group
+                                label.control-label(for='groupDescription') Description
+                                input.form-control#groupDescription.input-xlarge(name='groupDescription', type='text', placeholder='Description', required='')
+                        div.modal-footer
+                            button.btn.btn-default(type="button", data-dismiss="modal") Create!
 
 
 
         script(src='/scripts/socket.io.min.js')
         script(src='/scripts/canvas.js')
         script(src='/scripts/virtualroom.js')
+
+
+

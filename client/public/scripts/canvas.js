@@ -255,7 +255,7 @@ $(function () {
     // Create the DOM for Groups
     var list = $('<li>', {
       class: 'list-group-item',
-      "id": group.name
+      "id": groupname
     });
     var title = $('<h5>', {
       text: 'Group: ' + group.name
