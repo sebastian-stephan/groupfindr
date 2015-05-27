@@ -120,7 +120,7 @@ $(function () {
     },
     remove: function () {
       var id = this.id;
-      stage.removeChild(this.shape);
+      otherPlayersContainer.removeChild(this.shape);
       delete players[id];
       update = true;
 
