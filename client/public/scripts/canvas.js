@@ -335,7 +335,9 @@ $(function () {
 
   });
 
-
+  socket.on('groupdeleted', function(data) {
+    groups[data.groupname].remove();
+  });
 
 
   socket.on('joinedgroup', function (info) {

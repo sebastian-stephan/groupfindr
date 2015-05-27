@@ -129,8 +129,12 @@ app.init = function (server) {
     });
     // Delete group, data includes roomname and groupname
     socket.on('deletegroup', function (data) {
+      // TODO: Make sure group is empty
       var currentRoom = socket.adapter.rooms[data.roomname];
       delete currentRoom.groups[data.groupname];
+
+      // Emit to other players that this group was deleted
+      app.io.to(data.roomname).emit('groupdeleted', data);
     });
 
     /* When a user logs in */
