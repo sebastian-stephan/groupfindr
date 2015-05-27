@@ -190,6 +190,16 @@ app.init = function (server) {
 
     /* When a user logs out */
     socket.on('disconnect', function () {
+      // Leave all groups before disconnecting
+      for (roomname in socket.roomdata) {
+        var room = socket.roomdata[roomname];
+        // Leave group if player is in one
+        if (room.mygroup) {
+          app.io.to(roomname).emit('leftgroup', {id: socket.id, name: room.mygroup.name, username: socket.username});
+        }
+      }
+
+      // Announce player's removal
       app.io.sockets.emit('remove', socket.id);
 
       // Normally socket.io deletes garbage collects empty rooms on disconnect,
