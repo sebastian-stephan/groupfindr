@@ -143,11 +143,13 @@ $(function () {
     }
   };
 
-  function Group(name, description, room) {
+  function Group(name, description, room, groupPos, groupShape) {
     this.name = name;
     this.description = description;
     this.room = room;
     this.players = {};
+    this.groupPos = groupPos;
+    this.groupShape = groupShape;
   }
 
   Group.prototype = {
@@ -185,7 +187,7 @@ $(function () {
     //setup key event handling, to be able to walk with the keys
     var that = this;
     $(document).keydown(function (event) {
-      var step = 10;
+      var step = 15;
       switch (event.keyCode) {
         case 37:
           that.moveTo(that.getPos().x - step, that.getPos().y);
@@ -239,17 +241,23 @@ $(function () {
   // Group creation
   socket.on('groupcreated', function (group) {
     var groupname = group.name.replace(/\s/g, '');
-    groups[groupname] = new Group(group.name, group.description, group.roomname);
 
-    var groupRadius = 100;
+    var container = new createjs.Container();
 
-    var groupCloud  = new createjs.Bitmap("images/cloud.png")
-    groupCloud.scaleX = 2
-    groupCloud.scaleY = 2;
+    // add ugly grey rectangle
+    var rect = new createjs.Shape();
+    drawRectangle(rect, 'grey', group.groupPos);
+    container.addChild(rect);
 
-    groupCloud.x = group.groupPos.x -groupRadius;
-    groupCloud.y = group.groupPos.y -groupRadius;
-    stage.addChildAt(groupCloud,0);
+    // add group name
+    var text = new createjs.Text(groupname, "20px Arial", 'white');
+    text.x = rect.x + 10;
+    text.y = rect.y + 5;
+    container.addChild(text);
+    stage.addChild(container);
+
+    groups[groupname] = new Group(group.name, group.description, group.roomname, group.groupPos, container);
+
     stage.update();
 
     // Create the DOM for Groups
@@ -299,6 +307,8 @@ $(function () {
   });
 
 
+
+
   socket.on('joinedgroup', function (info) {
     var groupname = info.name.replace(/\s/g, '');
 
@@ -325,6 +335,7 @@ $(function () {
     var group = groups[groupname];
     if (group) {
       group.addPlayer(players[info.id]);
+      redraw(group);
     }
   });
 
@@ -355,6 +366,7 @@ $(function () {
     var group = groups[groupname];
     if (group) {
       group.removePlayer(info.id);
+      redraw(group);
     }
     // only show delete button in case there is no player in the group
     if(group.countPlayers() == 0){
@@ -515,4 +527,34 @@ $(function () {
     });
   });
 
+  function drawRectangle(rect, color, position) {
+    var groupRadius = 125;
+    rect.graphics.beginFill(color);
+    rect.graphics.drawRect(0, 0, groupRadius*2, groupRadius*2);
+    rect.graphics.endFill();
+    rect.x = position.x - groupRadius;
+    rect.y = position.y - groupRadius;
+    rect.height = groupRadius*2;
+    rect.width = groupRadius*2;
+  }
+
+  function redraw(group) {
+    var rect = group.groupShape.getChildAt(0);
+    var size = 0;
+    for (var k in group.players) {
+      if (group.players.hasOwnProperty(k)) {
+        ++size;
+      }
+    }
+    if (size > 3 && size < 7) {
+      rect.graphics.clear();
+      drawRectangle(rect, 'green', group.groupPos);
+    } else if (size > 6) {
+      rect.graphics.clear();
+      drawRectangle(rect, 'red', group.groupPos);
+    } else {
+      rect.graphics.clear();
+      drawRectangle(rect, 'grey', group.groupPos);
+    }
+  }
 });
