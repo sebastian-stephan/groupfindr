@@ -37,8 +37,13 @@ block content
 
                     button.btn.btn-info.btn-lg(type="button", data-toggle='modal', data-target="#createGroupModal") Open Modal
                 .col-sm-8
-                    canvas#mycanvas(width='1000', height='1000', style='width:100%')
-                        | Your browser does not support canvas.
+                    div#canvas-wrap
+                        canvas#mycanvas(width='1000', height='1000', style='width:100%')
+                            | Your browser does not support canvas.
+                        div#overlay
+                            // CREATE GROUP BUTTON
+                            a(href='#')
+                                #createGroupButton.round-button-circle
                 .chat-box
                     input(type="checkbox")
                     label(data-expanded="Close Chatbox" data-collapsed="Open Chatbox")
@@ -69,6 +74,4 @@ block content
         script(src='/scripts/canvas.js')
         script(src='/scripts/virtualroom.js')
 
-        // CREATE GROUP BUTTON
-        a(href='#')
-            #createGroupButton.round-button-circle
+
