@@ -56,7 +56,7 @@ $(function () {
   function createSprite(image) {
     return new createjs.SpriteSheet({
       "images": [image],
-      frames: {width: 32, height: 50, regX: 16, regY: 25, count: 16},
+      frames: {width: 64, height: 100, regX: 32, regY: 50, count: 16},
       animations: {
         "standdown": 0,
         "standleft": 4,
