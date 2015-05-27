@@ -1,6 +1,7 @@
 #mycanvas {
     display: none;
-    background-color: #f0ad4e;
+    background-color: #ffd700;
+    border-radius: 20px;
 }
 .row {
     display: none;
