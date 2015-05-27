@@ -193,7 +193,7 @@ app.init = function (server) {
       app.io.sockets.emit('remove', socket.id);
 
       // Normally socket.io deletes garbage collects empty rooms on disconnect,
-      // but since we manually added a 'gorups' object, we have to manually clean
+      // but since we manually added a 'groups' object, we have to manually clean
       // the room.
       for (roomname in socket.adapter.rooms) {
         var room = socket.adapter.rooms[roomname];
