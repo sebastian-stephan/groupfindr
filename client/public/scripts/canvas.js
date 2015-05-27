@@ -187,7 +187,7 @@ $(function () {
     //setup key event handling, to be able to walk with the keys
     var that = this;
     $(document).keydown(function (event) {
-      var step = 10;
+      var step = 15;
       switch (event.keyCode) {
         case 37:
           that.moveTo(that.getPos().x - step, that.getPos().y);
