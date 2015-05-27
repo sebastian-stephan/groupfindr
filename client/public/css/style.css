@@ -63,22 +63,8 @@ li.list-group-item p.text-muted {
 li.list-group-item h5 {
     color: #0084d1;
 }
-
 /* END GROUP INFO */
 
-/* Red button over canvas */
-.round-button-circle {
-    display: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    overflow:hidden;
-    background: red;
-    box-shadow: 0 0 7px gray;
-}
-.round-button-circle:hover {
-    background:darkred;
-}
 #canvas-wrap {
     position:relative
 }
@@ -87,3 +73,8 @@ li.list-group-item h5 {
     bottom: 20px;
     right: 20px;
 }
+
+#overlay *:focus {
+    outline: none;
+}
+
