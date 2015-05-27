@@ -3,8 +3,17 @@ $(function () {
   var ownPlayer;      // Holds the own players player object
   var players = {};   // Contains all player objects (incl. own)
   var groups = {};    // Contains all group objects
+
   // Set up stage (canvas)
   var stage = new createjs.Stage('mycanvas');
+
+  var groupsContainer = new createjs.Container();        // Bottom layer: Group rectangles
+  var otherPlayersContainer = new createjs.Container();  // Second layer: Other player shapes
+  var playerContainer = new createjs.Container();       // Top layer: Own player shape
+
+  stage.addChild(groupsContainer);
+  stage.addChild(otherPlayersContainer);
+  stage.addChild(playerContainer);
 
 
   var update = true;  // Whenever we set this to true, in the next tick
@@ -95,7 +104,7 @@ $(function () {
     this.username = username;
     this.shape = new createjs.Sprite(sprite, "standdown");
     this.shape.player = this;
-    stage.addChild(this.shape);
+    this.addToCanvas();
     this.setPos(xpos, ypos);
   }
 
@@ -140,6 +149,9 @@ $(function () {
       if (this.shape.currentAnimation != direction) {
         this.shape.gotoAndPlay(direction);
       }
+    },
+    addToCanvas: function() {
+      otherPlayersContainer.addChild(this.shape);
     }
   };
 
@@ -218,6 +230,12 @@ $(function () {
     socket.emit('updatepos', pos);
   };
 
+  // Overwrite the addToCanvas() function, so that the sprite will be in
+  // a higher level than the other players sprites
+  OwnPlayer.prototype.addToCanvas = function () {
+    playerContainer.addChild(this.shape);
+  };
+
   /**
    * Incoming socket call: called when the server sends a new update.
    * Contains data about 1 player with id, username, x and y.
@@ -254,7 +272,7 @@ $(function () {
     text.x = rect.x + 10;
     text.y = rect.y + 5;
     container.addChild(text);
-    stage.addChild(container);
+    groupsContainer.addChild(container);
 
     groups[groupname] = new Group(group.name, group.description, group.roomname, group.groupPos, container);
 
@@ -378,27 +396,6 @@ $(function () {
     alert(msg);
   });
 
-  $('#createGroupButton').click(function () {
-    var name = $('#groupName').val();
-    var description = $('#groupDescription').val();
-    if (name == "") {
-      alert('Please enter a group name')
-    } else {
-      socket.emit('creategroup', {roomname: ownPlayer.room, groupname: name, groupdescription: description});
-      $('#groupName').val('');
-      $('#groupDescription').val('');
-    }
-  });
-
-  /*Get Groups*/
-  $('#getGroupsButton').click(function () {
-    console.log('get group');
-    socket.emit('getgroups');
-    console.log('get group2');
-  });
-
-
-
   /**
    * Incoming socket call: called when a player leaves. Removes him
    * from the screen and map.
@@ -503,6 +500,17 @@ $(function () {
     }
   });
 
+  $('#createGroupButton').click(function () {
+    var name = $('#groupName').val();
+    var description = $('#groupDescription').val();
+    if (name == "") {
+      alert('Please enter a group name')
+    } else {
+      socket.emit('creategroup', {roomname: ownPlayer.room, groupname: name, groupdescription: description});
+      $('#groupName').val('');
+      $('#groupDescription').val('');
+    }
+  });
 
   /**
    *  Login Formula clicked: Hide form, show canvas and create new game object.
