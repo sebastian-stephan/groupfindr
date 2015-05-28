@@ -3,8 +3,17 @@ $(function () {
   var ownPlayer;      // Holds the own players player object
   var players = {};   // Contains all player objects (incl. own)
   var groups = {};    // Contains all group objects
+
   // Set up stage (canvas)
   var stage = new createjs.Stage('mycanvas');
+
+  var groupsContainer = new createjs.Container();        // Bottom layer: Group rectangles
+  var otherPlayersContainer = new createjs.Container();  // Second layer: Other player shapes
+  var playerContainer = new createjs.Container();       // Top layer: Own player shape
+
+  stage.addChild(groupsContainer);
+  stage.addChild(otherPlayersContainer);
+  stage.addChild(playerContainer);
 
 
   var update = true;  // Whenever we set this to true, in the next tick
@@ -95,7 +104,7 @@ $(function () {
     this.username = username;
     this.shape = new createjs.Sprite(sprite, "standdown");
     this.shape.player = this;
-    stage.addChild(this.shape);
+    this.addToCanvas();
     this.setPos(xpos, ypos);
   }
 
@@ -111,7 +120,7 @@ $(function () {
     },
     remove: function () {
       var id = this.id;
-      stage.removeChild(this.shape);
+      otherPlayersContainer.removeChild(this.shape);
       delete players[id];
       update = true;
 
@@ -140,14 +149,19 @@ $(function () {
       if (this.shape.currentAnimation != direction) {
         this.shape.gotoAndPlay(direction);
       }
+    },
+    addToCanvas: function() {
+      otherPlayersContainer.addChild(this.shape);
     }
   };
 
-  function Group(name, description, room) {
+  function Group(name, description, room, groupPos, groupShape) {
     this.name = name;
     this.description = description;
     this.room = room;
     this.players = {};
+    this.groupPos = groupPos;
+    this.groupShape = groupShape;
   }
 
   Group.prototype = {
@@ -160,6 +174,23 @@ $(function () {
     },
     countPlayers: function(){
       return Object.keys(this.players).length;
+    },
+    remove: function(){
+      // Remove from sidebar
+      $('#'+this.name).remove();
+
+      // Remove from canvas
+      groupsContainer.removeChild(this.groupShape);
+
+      // Announce to others
+      var groupinfo = {
+        roomname: this.room,
+        groupname: this.name
+      }
+      socket.emit('deletegroup', groupinfo);
+
+      // Try to delete itself (might not work?)
+      delete groups[this.name];
     }
   };
   /*
@@ -185,7 +216,7 @@ $(function () {
     //setup key event handling, to be able to walk with the keys
     var that = this;
     $(document).keydown(function (event) {
-      var step = 10;
+      var step = 15;
       switch (event.keyCode) {
         case 37:
           that.moveTo(that.getPos().x - step, that.getPos().y);
@@ -216,6 +247,12 @@ $(function () {
     socket.emit('updatepos', pos);
   };
 
+  // Overwrite the addToCanvas() function, so that the sprite will be in
+  // a higher level than the other players sprites
+  OwnPlayer.prototype.addToCanvas = function () {
+    playerContainer.addChild(this.shape);
+  };
+
   /**
    * Incoming socket call: called when the server sends a new update.
    * Contains data about 1 player with id, username, x and y.
@@ -239,23 +276,30 @@ $(function () {
   // Group creation
   socket.on('groupcreated', function (group) {
     var groupname = group.name.replace(/\s/g, '');
-    groups[groupname] = new Group(group.name, group.description, group.roomname);
 
-    var groupRadius = 100;
+    var container = new createjs.Container();
 
-    var groupCloud  = new createjs.Bitmap("images/cloud.png")
-    groupCloud.scaleX = 2
-    groupCloud.scaleY = 2;
+    // add ugly grey rectangle
+    var rect = new createjs.Shape();
+    drawRectangle(rect, 'grey', group.groupPos);
+    container.addChild(rect);
 
-    groupCloud.x = group.groupPos.x -groupRadius;
-    groupCloud.y = group.groupPos.y -groupRadius;
-    stage.addChildAt(groupCloud,0);
-    stage.update();
+    // add group name
+    var text = new createjs.Text(groupname, "20px Arial", 'white');
+    text.x = rect.x + 10;
+    text.y = rect.y + 5;
+    container.addChild(text);
+    groupsContainer.addChild(container);
+
+    groups[groupname] = new Group(group.name, group.description, group.roomname, group.groupPos, container);
+    var groupObject = groups[groupname];
+
+    //stage.update();
 
     // Create the DOM for Groups
     var list = $('<li>', {
       class: 'list-group-item',
-      "id": group.name
+      "id": groupname
     });
     var title = $('<h5>', {
       text: 'Group: ' + group.name
@@ -273,14 +317,7 @@ $(function () {
       'aria-hidden': 'true',
       'data-placement': 'right'
     }).click(function() {
-      //remove in frontend
-      $('#'+group.name).remove();
-      groups[group.name]= null;
-      var groupinfo = {
-        roomname: group.roomname,
-        groupname: group.name
-      }
-      socket.emit('deletegroup', groupinfo);
+      groupObject.remove();
     });
 
     list.append(deleteicon);
@@ -296,6 +333,10 @@ $(function () {
     // Initialize tooltip
     $('[data-toggle="tooltip"]').tooltip();
 
+  });
+
+  socket.on('groupdeleted', function(data) {
+    groups[data.groupname].remove();
   });
 
 
@@ -325,6 +366,7 @@ $(function () {
     var group = groups[groupname];
     if (group) {
       group.addPlayer(players[info.id]);
+      redraw(group);
     }
   });
 
@@ -355,6 +397,7 @@ $(function () {
     var group = groups[groupname];
     if (group) {
       group.removePlayer(info.id);
+      redraw(group);
     }
     // only show delete button in case there is no player in the group
     if(group.countPlayers() == 0){
@@ -365,27 +408,6 @@ $(function () {
   socket.on('errormessage', function (msg) {
     alert(msg);
   });
-
-  $('#createGroupButton').click(function () {
-    var name = $('#groupName').val();
-    var description = $('#groupDescription').val();
-    if (name == "") {
-      alert('Please enter a group name')
-    } else {
-      socket.emit('creategroup', {roomname: ownPlayer.room, groupname: name, groupdescription: description});
-      $('#groupName').val('');
-      $('#groupDescription').val('');
-    }
-  });
-
-  /*Get Groups*/
-  $('#getGroupsButton').click(function () {
-    console.log('get group');
-    socket.emit('getgroups');
-    console.log('get group2');
-  });
-
-
 
   /**
    * Incoming socket call: called when a player leaves. Removes him
@@ -491,6 +513,17 @@ $(function () {
     }
   });
 
+  $('#createGroupButton').click(function () {
+    var name = $('#groupName').val();
+    var description = $('#groupDescription').val();
+    if (name == "") {
+      alert('Please enter a group name')
+    } else {
+      socket.emit('creategroup', {roomname: ownPlayer.room, groupname: name, groupdescription: description});
+      $('#groupName').val('');
+      $('#groupDescription').val('');
+    }
+  });
 
   /**
    *  Login Formula clicked: Hide form, show canvas and create new game object.
@@ -507,12 +540,41 @@ $(function () {
     param.y = 500;
     socket.emit('login', param);
     $('#joinform').hide("fade", function () { //hide login form and show canvas and sidepanels
-       $('#mycanvas').fadeIn(200);
-       $('#createGroupButton').fadeIn(200);
+       $('#canvas-wrap').fadeIn(200);
        $('.row').fadeIn(200);
       ownPlayer = new OwnPlayer(socket.id, param.x, param.y, param.username, param.room);
       players[ownPlayer.id] = ownPlayer; // Save game object in global map of player objects.
     });
   });
 
+  function drawRectangle(rect, color, position) {
+    var groupRadius = 125;
+    rect.graphics.beginFill(color);
+    rect.graphics.drawRect(0, 0, groupRadius*2, groupRadius*2);
+    rect.graphics.endFill();
+    rect.x = position.x - groupRadius;
+    rect.y = position.y - groupRadius;
+    rect.height = groupRadius*2;
+    rect.width = groupRadius*2;
+  }
+
+  function redraw(group) {
+    var rect = group.groupShape.getChildAt(0);
+    var size = 0;
+    for (var k in group.players) {
+      if (group.players.hasOwnProperty(k)) {
+        ++size;
+      }
+    }
+    if (size > 3 && size < 7) {
+      rect.graphics.clear();
+      drawRectangle(rect, 'green', group.groupPos);
+    } else if (size > 6) {
+      rect.graphics.clear();
+      drawRectangle(rect, 'red', group.groupPos);
+    } else {
+      rect.graphics.clear();
+      drawRectangle(rect, 'grey', group.groupPos);
+    }
+  }
 });

@@ -129,8 +129,12 @@ app.init = function (server) {
     });
     // Delete group, data includes roomname and groupname
     socket.on('deletegroup', function (data) {
+      // TODO: Make sure group is empty
       var currentRoom = socket.adapter.rooms[data.roomname];
       delete currentRoom.groups[data.groupname];
+
+      // Emit to other players that this group was deleted
+      app.io.to(data.roomname).emit('groupdeleted', data);
     });
 
     /* When a user logs in */
@@ -165,7 +169,7 @@ app.init = function (server) {
         socket.emit('groupcreated', group);
       }
 
-      // for all players(socket objects) in room
+      // Let the joining player know which players are in which groups
       for (var socketId in room) {
         // only socketIds, no groups property
           if(typeof room[socketId] != 'object'){
@@ -173,10 +177,11 @@ app.init = function (server) {
             // check if player is in a group
             if(usr.roomdata[data.room].mygroup){
               var group = usr.roomdata[data.room].mygroup;
-              // if player has room: emit('joinedroom', data)
-              app.io.to(data.room).emit('joinedgroup', {id: socketId, name: group.name, username: usr.username});
+              // Player (socketId) is in a group. Inform the joining player (socket) about this
+              socket.emit('joinedgroup', {id: socketId, name: group.name, username: usr.username});
             }else{
-              app.io.to(data.room).emit('joinedgroup', {id: socketId, name: 'default',username: usr.username, addDefault: true});
+              // Player (socketId) is in the default group. Inform the joining player (socket) about this
+              socket.emit('joinedgroup', {id: socketId, name: 'default',username: usr.username, addDefault: true});
             }
           }
       }
@@ -189,10 +194,20 @@ app.init = function (server) {
 
     /* When a user logs out */
     socket.on('disconnect', function () {
+      // Leave all groups before disconnecting
+      for (roomname in socket.roomdata) {
+        var room = socket.roomdata[roomname];
+        // Leave group if player is in one
+        if (room.mygroup) {
+          app.io.to(roomname).emit('leftgroup', {id: socket.id, name: room.mygroup.name, username: socket.username});
+        }
+      }
+
+      // Announce player's removal
       app.io.sockets.emit('remove', socket.id);
 
       // Normally socket.io deletes garbage collects empty rooms on disconnect,
-      // but since we manually added a 'gorups' object, we have to manually clean
+      // but since we manually added a 'groups' object, we have to manually clean
       // the room.
       for (roomname in socket.adapter.rooms) {
         var room = socket.adapter.rooms[roomname];

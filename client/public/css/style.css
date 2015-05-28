@@ -1,5 +1,16 @@
-#mycanvas {
+/* Canvas */
+#canvas-wrap,
+#mycanvas{
+    width: 100%;
+    max-width: 85vmin;
+    max-height: 85vmin;
+}
+
+#canvas-wrap {
     display: none;
+}
+
+#mycanvas {
     background-color: #ffd700;
     border-radius: 20px;
 }
@@ -21,6 +32,25 @@ label.control-label
     font-size: x-large;
 }
 
+/* AddGroup Button (responsive) */
+@media screen and (max-width: 349px) {
+    #overlay {
+        font-size: 2em;
+    }
+}
+@media screen and (min-width: 350px) and (max-width: 699px) {
+    #overlay {
+        font-size: 2.5em;
+    }
+}
+@media screen and (min-width: 700px) {
+    #overlay {
+        font-size: 3em;
+    }
+}
+
+
+/* Chat */
 ul.chat {
     width: 350px;
     height: 150px;
@@ -36,7 +66,7 @@ ul.chat li {
     overflow: hidden;
 }
 
-/* START GROUP INFO */
+/* Sidebar */
 ul.group-members {
     padding-left: 0px;
     display: inline-block;
@@ -55,21 +85,7 @@ span.glyphicon.glyphicon-remove.deletegroup {
     top: 10px;
 }
 
-.round-button-circle {
-    display: none;
-    width: 50px;
-    height: 50px;
-    position: fixed;
-    right: 300px;
-    bottom: 7px;
-    border-radius: 50%;
-    overflow:hidden;
-    background: red;
-    box-shadow: 0 0 7px gray;
-}
-.round-button-circle:hover {
-    background:darkred;
-}
+
 
 /* Display list in two columns */
 ul.group-members li {
@@ -91,5 +107,18 @@ li.list-group-item p.text-muted {
 li.list-group-item h5 {
     color: #0084d1;
 }
-
 /* END GROUP INFO */
+
+#canvas-wrap {
+    position:relative
+}
+#overlay     {
+    position:absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+#overlay *:focus {
+    outline: none;
+}
+
