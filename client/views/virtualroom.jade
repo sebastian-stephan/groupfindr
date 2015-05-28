@@ -3,19 +3,23 @@ extends layout
 block content
     div.container
         h1#title #{title}
-
+        br
+        br
+        br
+        br
+        br
         form#joinform.form-horizontal(action='')
             fieldset
                 // Username
                 .control-group
                     label.control-label(for='username') Username
                     .controls
-                        input#username.input-xlarge(name='username', type='text', placeholder='Enter username', required='')
+                        input#username.input-lg(name='username', type='text', placeholder='Enter username', required='')
                 // Room name advanced
                 .control-group
                     label.control-label(for='room') Room
                     .controls
-                        input#room.input-xlarge(name='room', type='text', placeholder='Enter room', required='', list='rooms', autocomplete='off')
+                        input#room.input-lg(name='room', type='text', placeholder='Enter room', required='', list='rooms', autocomplete='off')
                         datalist#rooms
                 // Join Button
                 .control-group

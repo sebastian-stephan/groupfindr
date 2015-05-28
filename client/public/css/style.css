@@ -7,6 +7,20 @@
     display: none;
 }
 
+form.form-horizontal
+{
+    vertical-align: middle;
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+label.control-label
+{
+    font-size: x-large;
+}
+
 ul.chat {
     width: 350px;
     height: 150px;
