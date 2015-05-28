@@ -27,20 +27,20 @@ app.init = function (server) {
       y: canvasHeight - groupRadius
     },
     {
-      x: canvasWidth/2,
+      x: canvasWidth / 2,
       y: 0 + groupRadius
     },
     {
       x: canvasWidth - groupRadius,
-      y: canvasHeight/2
+      y: canvasHeight / 2
     },
     {
-      x: canvasWidth/2,
+      x: canvasWidth / 2,
       y: canvasHeight - groupRadius
     },
     {
       x: 0 + groupRadius,
-      y: canvasHeight/2
+      y: canvasHeight / 2
     }
   ];
 
@@ -129,21 +129,39 @@ app.init = function (server) {
     });
     // Delete group, data includes roomname and groupname
     socket.on('deletegroup', function (data) {
-      // TODO: Make sure group is empty
-      var currentRoom = socket.adapter.rooms[data.roomname];
-      delete currentRoom.groups[data.groupname];
+      var room = socket.adapter.rooms[data.roomname];
+      var empty = true;
+      // Go through players to see if anyone is in this particular group
+      for (var socketId in room) {
+        // only socketIds, no groups property
+        if (typeof room[socketId] != 'object') {
+          var usr = that.io.sockets.connected[socketId];
+          // check if player is in this group
+          var usrgroup = usr.roomdata[data.roomname].mygroup;
+          if (usrgroup && usrgroup.name == data.groupname) {
+            empty = false;
+            break;
+          }
+        }
+      }
 
-      // Emit to other players that this group was deleted
-      app.io.to(data.roomname).emit('groupdeleted', data);
+      if(empty) {
+        delete room.groups[data.groupname];
+        // Emit to other players that this group was deleted
+        app.io.to(data.roomname).emit('groupdeleted', data);
+      } else {
+        // group stays... TODO: send a troll-warning to socket?
+      }
     });
 
     /* When a user logs in */
     socket.on('login', function (data) {
+      console.log(data);
       socket.join(data.room);
       socket.roomdata[data.room] = {x: data.x, y: data.y};
 
       // Create empty groups container if the room was newly created
-      if(!socket.adapter.rooms[data.room].groups) {
+      if (!socket.adapter.rooms[data.room].groups) {
         socket.adapter.rooms[data.room].groups = {};
       }
       socket.username = data.username;
@@ -155,39 +173,46 @@ app.init = function (server) {
       // Send back information about all other players
       var room = socket.adapter.rooms[data.room];
       for (var socketId in room) {
-        if(typeof room[socketId] != 'object'){
+        if (typeof room[socketId] != 'object') {
           var usr = that.io.sockets.connected[socketId];
-          var pos = {id: usr.id, username: usr.username, room: data.room, x: usr.roomdata[data.room].x, y: usr.roomdata[data.room].y};
+          var pos = {
+            id: usr.id,
+            username: usr.username,
+            room: data.room,
+            x: usr.roomdata[data.room].x,
+            y: usr.roomdata[data.room].y
+          };
           socket.emit('update', pos);
         }
       }
 
       // Send back information about all groups
       var groups = socket.adapter.rooms[data.room].groups;
-      for(var groupname in groups){
+      for (var groupname in groups) {
         var group = socket.adapter.rooms[data.room].groups[groupname];
         socket.emit('groupcreated', group);
       }
 
       // Let the joining player know which players are in which groups
+      console.log(room);
       for (var socketId in room) {
         // only socketIds, no groups property
-          if(typeof room[socketId] != 'object'){
-            var usr = that.io.sockets.connected[socketId];
-            // check if player is in a group
-            if(usr.roomdata[data.room].mygroup){
-              var group = usr.roomdata[data.room].mygroup;
-              // Player (socketId) is in a group. Inform the joining player (socket) about this
-              socket.emit('joinedgroup', {id: socketId, name: group.name, username: usr.username});
-            }else{
-              // Player (socketId) is in the default group. Inform the joining player (socket) about this
-              socket.emit('joinedgroup', {id: socketId, name: 'default',username: usr.username, addDefault: true});
-            }
+        if (typeof room[socketId] != 'object') {
+          var usr = that.io.sockets.connected[socketId];
+          // check if player is in a group
+          if (usr.roomdata[data.room].mygroup) {
+            var group = usr.roomdata[data.room].mygroup;
+            // Player (socketId) is in a group. Inform the joining player (socket) about this
+            socket.emit('joinedgroup', {id: socketId, name: group.name, username: usr.username});
+          } else {
+            // Player (socketId) is in the default group. Inform the joining player (socket) about this
+            socket.emit('joinedgroup', {id: socketId, name: 'default', username: usr.username, addDefault: true});
           }
+        }
       }
 
       // Add Player to default Group
-     // app.io.to(data.room).emit('joinedgroup', {id: socket.id, name: 'default', username: socket.username, addDefault: true});
+      // app.io.to(data.room).emit('joinedgroup', {id: socket.id, name: 'default', username: socket.username, addDefault: true});
 
 
     });

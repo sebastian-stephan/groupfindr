@@ -176,21 +176,23 @@ $(function () {
       return Object.keys(this.players).length;
     },
     remove: function(){
-      // Remove from sidebar
-      $('#'+this.name).remove();
+      if (this.countPlayers() == 0) {
+        // Remove from sidebar
+        $('#'+this.name).remove();
 
-      // Remove from canvas
-      groupsContainer.removeChild(this.groupShape);
+        // Remove from canvas
+        groupsContainer.removeChild(this.groupShape);
 
-      // Announce to others
-      var groupinfo = {
-        roomname: this.room,
-        groupname: this.name
+        // Announce to others
+        var groupinfo = {
+          roomname: this.room,
+          groupname: this.name
+        }
+        socket.emit('deletegroup', groupinfo);
+
+        // Try to delete itself (might not work?)
+        delete groups[this.name];
       }
-      socket.emit('deletegroup', groupinfo);
-
-      // Try to delete itself (might not work?)
-      delete groups[this.name];
     }
   };
   /*
