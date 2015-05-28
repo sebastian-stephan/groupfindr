@@ -531,6 +531,8 @@ $(function () {
   $('#joinform').submit(function (e) {
     //remove title to gain more vertical space
     $('#title').hide();
+    $('div.titlebar').hide();
+    $('.footer').hide();
 
     e.preventDefault();
     var param = {};

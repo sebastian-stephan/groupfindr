@@ -1,13 +1,10 @@
 extends layout
 
 block content
+    div.titlebar
+        img#logo(src='images/logo.png',alt='GroupFindr')
+        hr(style='background:#F87431; border:0; height:7px')
     div.container
-        h1#title #{title}
-        br
-        br
-        br
-        br
-        br
         form#joinform.form-horizontal(action='')
             fieldset
                 // Username
@@ -25,7 +22,7 @@ block content
                 .control-group
                     label.control-label(for='joinbutton')
                     .controls
-                        button#joinbutton.btn.btn-primary(type='submit') Join
+                        button#joinbutton.btn-lg.btn-primary(type='submit') Join
         .container
             .row
                 .col-sm-4

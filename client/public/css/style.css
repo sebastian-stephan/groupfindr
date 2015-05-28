@@ -14,6 +14,28 @@
     background-color: #ffd700;
     border-radius: 20px;
 }
+
+#logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.titlebar {
+    background: #ffd700;
+}
+
+/* footer styling */
+
+.footer {
+    background: #ffd700;
+    width:100%;
+    position:absolute;
+    bottom:0;
+    left:0;
+}
+
+
 .row {
     display: none;
 }
@@ -22,7 +44,6 @@ form.form-horizontal
 {
     vertical-align: middle;
     width: 200px;
-    display: block;
     margin-left: auto;
     margin-right: auto;
 }
