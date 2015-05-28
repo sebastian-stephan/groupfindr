@@ -100,6 +100,16 @@ app.init = function (server) {
 
     /* When a user creates a group */
     socket.on('creategroup', function (data) {
+
+      // normalize the groupname hardcore
+      // data.groupname = data.groupname.replace(/^[^a-zA-Z]+/, "");
+      // data.groupname = data.groupname.replace(/[^a-zA-Z0-9]+/g, "");
+
+      // normalize the groupname rather softly
+      data.groupname = data.groupname.replace(/[\s]+/g, "");
+
+      var match = /^[a-zA-z][a-zA-Z0-9]*$/.test(data.groupname);
+
       var exists = false;
       for (var name in socket.adapter.rooms[data.roomname].groups) {
         if (name == data.groupname) {
@@ -108,7 +118,7 @@ app.init = function (server) {
       }
 
       if (exists) {
-        socket.emit('errormessage', 'Group already exists!');
+        socket.emit('errormessage', 'Group ' + data.groupname + ' already exists!');
         return;
       }
 
@@ -116,6 +126,11 @@ app.init = function (server) {
       var newGroup = new Group(data.groupname, data.groupdescription, data.roomname);
       if (!newGroup.groupPos) {
         socket.emit('errormessage', 'No space for more groups!');
+        return;
+      }
+
+      if (!match) {
+        socket.emit('errormessage', data.groupname + ' is an invalid group name.\nOnly letters & numbers are allowed and the group name has to start with a letter.');
         return;
       }
 
