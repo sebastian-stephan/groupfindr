@@ -310,7 +310,7 @@ $(function () {
       class: 'list-group-item',
       "id": groupname
     });
-    var title = $('<h5>', {
+    var title = $('<p>', {
       text: 'Group: ' + group.name
     });
     var pmembers = $('<p>', {
@@ -488,9 +488,9 @@ $(function () {
 
               // only jpeg is supported by jsPDF
               var imgData = canvas.toDataURL("image/jpeg", 1.0);
-              var pdf = new jsPDF('a6');
+              var pdf = new jsPDF();
 
-              pdf.addImage(imgData, 'JPEG', 15, 40);
+              pdf.addImage(imgData, 'JPEG', 5, 5);
               pdf.save("groups.pdf");
           },
           width: 250,

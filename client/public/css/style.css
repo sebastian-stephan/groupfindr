@@ -30,10 +30,14 @@ div.titlebar {
     background: #ffd700;
 }
 
+
+
 div#listinfo {
     background: #ffffff;
     background-color: #ffffff;
+    font-size: x-large;
 }
+
 
 /* footer styling */
 
