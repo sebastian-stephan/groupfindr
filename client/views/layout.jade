@@ -7,7 +7,7 @@ html
             block meta
                 meta(name='description', content='')
                 meta(name='keywords', content='')
-
+            link(rel='shortcut icon', href='/images/favicon.ico', type='image/x-icon')
             // JQuery
             script(src='/scripts/jquery.min.js')
 
@@ -25,6 +25,16 @@ html
             // Font awesome
             link(rel='stylesheet' href='/css/font-awesome.min.css')
 
+            //jsPDF
+            script(src='scripts/jspdf.min.js')
+
+            //canvas2image script
+            script(src='/scripts/canvas2image.js')
+
+            //html2canvas script
+            script(src='/scripts/html2canvas.js')
+
+
             // Chat design
             link(rel='styleSheet', href='/css/bubbles.css')
             link(rel='styleSheet', href='/css/chat.css')
@@ -41,6 +51,8 @@ html
             // App specific scripts
             script(src='/scripts/canvas.js')
             script(src='/scripts/virtualroom.js')
+
+
     body
         block content
 
