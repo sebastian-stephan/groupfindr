@@ -469,6 +469,26 @@ $(function () {
     addOwnChatMessage(text);
   });
 
+  //export functionality
+  $('#exportButton').click(function (){
+      //alert("Hello World!");
+      html2canvas( document.getElementById('listinfo') , {
+          onrendered: function(canvas) {
+              //Canvas2Image.saveAsPNG(canvas, 250, document.getElementById('listinfo').clientHeight);
+              //document.body.appendChild(canvas);
+
+              // only jpeg is supported by jsPDF
+              var imgData = canvas.toDataURL("image/jpeg", 1.0);
+              var pdf = new jsPDF('a6');
+
+              pdf.addImage(imgData, 'JPEG', 15, 40);
+              pdf.save("groups.pdf");
+          },
+          width: 250,
+          height: document.getElementById('listinfo').clientHeight
+      });
+  });
+
   /**
    * send the chatMessage out through socketIO
    */
