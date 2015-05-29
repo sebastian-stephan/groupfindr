@@ -64,18 +64,20 @@ block content
             div.modal.fade(id="createGroupModal", role="dialog")
                 div.modal-dialog
                     div.modal-content
-                        div.modal-header
-                            button.close(type="button", data-dismiss="modal") &times;
-                            h4.modal-title Create Group
-                        div.modal-body
-                            div.form-group
-                                label.control-label(for='groupName') Name
-                                input.form-control#groupName.input-xlarge(name='groupName', type='text', placeholder='Name', required='')
-                            div.form-group
-                                label.control-label(for='groupDescription') Description
-                                input.form-control#groupDescription.input-xlarge(name='groupDescription', type='text', placeholder='Description', required='')
-                        div.modal-footer
-                            button.btn.btn-default#createGroupButton(type="button", data-dismiss="modal") Create!
+                        form#createGroupForm
+                            div.modal-header
+                                button.close(type="button", data-dismiss="modal") &times;
+                                h4.modal-title Create Group
+                            div.modal-body
+                                div.form-group
+                                    label.control-label(for='groupName') Name
+                                    input.form-control#groupName.input-xlarge(name='groupName', type='text', placeholder='Name', required='')
+                                div.form-group
+                                    label.control-label(for='groupDescription') Description
+                                    input.form-control#groupDescription.input-xlarge(name='groupDescription', type='text', placeholder='Description', required='')
+                            div.modal-footer
+                                //button.btn.btn-default#createGroupButton(type="button", data-dismiss="modal") Create!
+                                input.btn.btn-default#createGroupButton(type='submit',value='Create!',data-dismiss='modal')
 
 
 
