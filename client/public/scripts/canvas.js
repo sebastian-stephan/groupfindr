@@ -315,9 +315,6 @@ $(function () {
     var title = $('<p>', {
       text: 'Group: ' + group.name
     });
-    var pmembers = $('<p>', {
-      text: 'Members: '
-    });
     var desc = $('<p>', {
       class: 'text-muted',
       text: group.description
@@ -335,7 +332,6 @@ $(function () {
     list.append(title);
     list.append(desc);
     list.append($('<hr>', {class: 'group-hr'}));
-    list.append(pmembers);
     list.append($('<ol>', {
       class: 'group-members',
       id: groupname
