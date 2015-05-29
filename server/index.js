@@ -19,10 +19,6 @@ app.init = function (server) {
       y: 0 + groupRadius
     },
     {
-      x: canvasWidth - groupRadius,
-      y: canvasHeight - groupRadius
-    },
-    {
       x: 0 + groupRadius,
       y: canvasHeight - groupRadius
     },
