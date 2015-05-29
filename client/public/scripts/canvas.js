@@ -581,4 +581,10 @@ $(function () {
       drawRectangle(rect, 'grey', group.groupPos);
     }
   }
+
+  // focus on groupname input field in modal
+  $('#createGroupModal').on('shown.bs.modal', function(){
+    $('#groupName').focus();
+  });
+
 });
