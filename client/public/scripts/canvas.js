@@ -230,15 +230,20 @@ $(function () {
       switch (event.keyCode) {
         case 37:
           that.moveTo(that.getPos().x - step, that.getPos().y);
+          event.preventDefault();
           break;
         case 38:
           that.moveTo(that.getPos().x, that.getPos().y - step);
+          event.preventDefault();
           break;
         case 39:
           that.moveTo(that.getPos().x + step, that.getPos().y);
+          event.preventDefault();
           break;
         case 40:
           that.moveTo(that.getPos().x, that.getPos().y + step);
+          event.preventDefault();
+          break;
       }
     });
 
