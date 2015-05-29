@@ -615,5 +615,4 @@ $(function () {
   $('#createGroupModal').on('shown.bs.modal', function(){
     $('#groupName').focus();
   });
-
 });
