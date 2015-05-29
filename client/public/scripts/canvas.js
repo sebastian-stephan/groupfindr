@@ -102,7 +102,11 @@ $(function () {
     this.id = id;
     this.room = room;
     this.username = username;
-    this.shape = new createjs.Sprite(sprite, "standdown");
+    var container = new createjs.Container();
+    var text = new createjs.Text(this.username, "20px Arial", 'black');
+    container.addChild(text);
+    container.addChild(sprite);
+    this.shape = new createjs.Sprite(container, "standdown");
     this.shape.player = this;
     this.addToCanvas();
     this.setPos(xpos, ypos);
@@ -146,8 +150,9 @@ $(function () {
 
     },
     playIfNotPlaying: function (direction) {
-      if (this.shape.currentAnimation != direction) {
-        this.shape.gotoAndPlay(direction);
+      var playerShape = this.shape.getChildAt(1);
+      if (playerShape.currentAnimation != direction) {
+        playerShape.gotoAndPlay(direction);
       }
     },
     addToCanvas: function() {
