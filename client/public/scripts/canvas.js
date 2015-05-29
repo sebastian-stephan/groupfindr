@@ -396,7 +396,10 @@ $(function () {
     announceLeaveGroup(info.username,groupname)
 
     // Remove username from group
-    $('ol#' + groupname).find('#' + info.id).remove();
+    while ($('#' + info.id).length > 0 ) {
+      $('#' + info.id).remove();
+    }
+
 
     // Add Player to default
     $('#default').append($('<li>', {
