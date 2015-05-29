@@ -1,3 +1,8 @@
+/* Super cool pixel font */
+body {
+    font-family: VT323;
+}
+
 /* Canvas */
 #canvas-wrap,
 #mycanvas{
