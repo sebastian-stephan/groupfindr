@@ -277,8 +277,9 @@ $(function () {
 
   // Group creation
   socket.on('groupcreated', function (group) {
-    var groupname = group.name.replace(/\s/g, '');
+    var groupname = group.name;
 
+    var shownName = groupname.length < 13 ? groupname : groupname.substring(0,10) + "...";
     var container = new createjs.Container();
 
     // add ugly grey rectangle
@@ -287,7 +288,7 @@ $(function () {
     container.addChild(rect);
 
     // add group name
-    var text = new createjs.Text(groupname, "20px Arial", 'white');
+    var text = new createjs.Text(shownName, "30px Arial", 'white');
     text.x = rect.x + 10;
     text.y = rect.y + 5;
     container.addChild(text);
@@ -602,4 +603,10 @@ $(function () {
       drawRectangle(rect, 'grey', group.groupPos);
     }
   }
+
+  // focus on groupname input field in modal
+  $('#createGroupModal').on('shown.bs.modal', function(){
+    $('#groupName').focus();
+  });
+
 });
