@@ -28,6 +28,7 @@ div.titlebar {
 div#listinfo {
     background: #ffffff;
     background-color: #ffffff;
+    font-size: larger;
 }
 
 /* footer styling */
