@@ -38,13 +38,21 @@ div#listinfo {
 /* footer styling */
 
 .footer {
-    background: #ffd700;
+    background: #0084d1;
     width:100%;
     position:absolute;
     bottom:0;
     left:0;
 }
 
+#footer {
+    color:#ffffff;
+}
+
+div#roombar {
+    background: #0084d1;
+    display: none;
+}
 
 .row {
     display: none;

@@ -573,6 +573,7 @@ $(function () {
     $('#joinform').hide("fade", function () { //hide login form and show canvas and sidepanels
        $('#canvas-wrap').fadeIn(200);
        $('.row').fadeIn(200);
+       $('#roombar').fadeIn(200);
        $('#roomtitle').text("Room #" + $('#room').val());
       ownPlayer = new OwnPlayer(socket.id, param.x, param.y, param.username, param.room);
       players[ownPlayer.id] = ownPlayer; // Save game object in global map of player objects.
