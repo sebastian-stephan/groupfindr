@@ -353,6 +353,11 @@ $(function () {
     //announce on the chat that the player has joined the group
     announceJoinGroup(info.username,groupname)
 
+    // Remove username from all groups
+    while ($('#' + info.id).length > 0 ) {
+      $('#' + info.id).remove();
+    }
+
     if (info.addDefault && $('#'+info.id).length==0) {
       $('#' + info.name).append($('<li>', {
         id: info.id,
@@ -391,7 +396,7 @@ $(function () {
     //announce on the chat that the player has left the group
     announceLeaveGroup(info.username,groupname)
 
-    // Remove username from group
+    // Remove username from all groups
     while ($('#' + info.id).length > 0 ) {
       $('#' + info.id).remove();
     }
