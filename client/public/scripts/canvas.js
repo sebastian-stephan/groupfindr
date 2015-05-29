@@ -103,10 +103,11 @@ $(function () {
     this.room = room;
     this.username = username;
     var container = new createjs.Container();
-    var text = new createjs.Text(this.username, "20px Arial", 'black');
+    var text = new createjs.Text(this.username, "20px VT323", '#666');
+    var playershape = new createjs.Sprite(sprite, "standdown");
     container.addChild(text);
-    container.addChild(sprite);
-    this.shape = new createjs.Sprite(container, "standdown");
+    container.addChild(playershape);
+    this.shape = container;
     this.shape.player = this;
     this.addToCanvas();
     this.setPos(xpos, ypos);
