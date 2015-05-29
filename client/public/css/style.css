@@ -61,7 +61,7 @@ label.control-label
 /* AddGroup Button (responsive) */
 @media screen and (max-width: 349px) {
     #overlay {
-        font-size: 2em;
+        font-size: 1.5em;
     }
 }
 @media screen and (min-width: 350px) and (max-width: 699px) {
