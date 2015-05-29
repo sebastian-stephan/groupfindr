@@ -105,8 +105,8 @@ $(function () {
     var container = new createjs.Container();
     var text = new createjs.Text(this.username, "30px VT323", 'black');
     text.textAlign = 'center';
+    text.y = text.y - 60;
     var playershape = new createjs.Sprite(sprite, "standdown");
-    playershape.y = container.y + 70;
     container.addChild(text);
     container.addChild(playershape);
     this.shape = container;
