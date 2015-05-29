@@ -103,8 +103,10 @@ $(function () {
     this.room = room;
     this.username = username;
     var container = new createjs.Container();
-    var text = new createjs.Text(this.username, "20px VT323", '#666');
+    var text = new createjs.Text(this.username, "30px VT323", 'black');
+    text.textAlign = 'center';
     var playershape = new createjs.Sprite(sprite, "standdown");
+    playershape.y = container.y + 70;
     container.addChild(text);
     container.addChild(playershape);
     this.shape = container;
@@ -291,12 +293,12 @@ $(function () {
     // add ugly grey rectangle
     var rect = new createjs.Shape();
     drawRectangle(rect, 'grey', group.groupPos);
-    container.addChild(rect);
 
     // add group name
-    var text = new createjs.Text(shownName, "30px Arial", 'white');
-    text.x = rect.x + 10;
+    var text = new createjs.Text(shownName, "40px VT323", 'white');
+    text.x = rect.x + 30;
     text.y = rect.y + 5;
+    container.addChild(rect);
     container.addChild(text);
     groupsContainer.addChild(container);
 
