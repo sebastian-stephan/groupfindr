@@ -294,7 +294,7 @@ $(function () {
     container.addChild(rect);
 
     // add group name
-    var text = new createjs.Text(shownName, "30px Arial", 'white');
+    var text = new createjs.Text(shownName, "30px VT323", 'white');
     text.x = rect.x + 10;
     text.y = rect.y + 5;
     container.addChild(text);
