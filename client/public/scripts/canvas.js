@@ -300,6 +300,12 @@ $(function () {
     } else {
       players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username, newPos.room, playerSpriteSheet);
 
+      // Add Player to default
+      $('#default').append($('<li>', {
+        id: newPos.id,
+        text: newPos.username
+      }));
+
       announceArrival(newPos.username);
     }
 
