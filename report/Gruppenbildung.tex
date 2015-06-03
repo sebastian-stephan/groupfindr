@@ -1,0 +1,77 @@
+\documentclass[a4paper,11pt,article,oneside]{memoir}
+\usepackage{ecis2015}
+
+%%% About this LaTeX template: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This template should work with any (reasonably recent) full
+% installation of TeXLive or MikTeX. The "ecis2015" package loads a
+% number of other packages, so if some package is missing, please
+% install it using the package manager of your TeX distribution. In
+% particular, if the "tikz" package is missing, you may have to install
+% "pgf" or simply remove our example graphics (see figure example
+% below).
+%
+% The file "ecis2015.sty" should be placed somewhere in your TeX Path
+% (or simply in the same folder as your document).
+%
+% Please use PDFLaTeX to compile your document.
+%
+% You need not escape special characters or Umlauts like é ä ö ü ß (in 
+% fact, you shouldn't), as this source is inputenc'd in UTF-8.
+%
+% Note for BibTeX users: We use BibLaTeX for formatting, so we use Biber
+% as a sorting backend (default). 
+% If you still need to use the old BibTeX program, please change the 
+% BibLaTeX backend in the package file ("ecis2015.sty").
+%
+%%% Enter Document Info here: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\maintitle{Web 2.0 Projekt - Gruppenbildung} % ← Don't use UPPERCASE here, we do that automatically.
+\shorttitle{Web 2.0 Projekt - Gruppenbildung} % ← This goes into the header.
+%\category{Research in Progress} % ← Choose one by deleting the others.
+
+% The review process is double blind.
+% Therefore papers submitted for review MUST NOT contain any author 
+% information – neither on the title page nor in the page header! 
+% This information will be added only once the submission is ACCEPTED.
+
+\authors{% Separate authors by a "\par" or blank line.
+Benedikt Bleyer (14-706-162) \par
+Fabio Isler (09-115-965) \par
+Genc Mazlami (09-923-061) \par
+Joel Scheuner (10-741-494) \par
+Moritz Schneider (11-490-455) \par
+Sebastian Stephan (08-731-465) \par
+}
+
+\shortauthors{Bleyer, Isler, Mazlami, Scheuner, Schneider, Stephan} % ← This goes into the header. 
+
+%%% BibTeX: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\addbibresource{bibliographie/literatur.bib} % ← Your .bib file, if you're using BibTeX
+%\bibliography{bibliographie/literatur}
+
+\begin{document}
+
+%\input{kapitel/abstract}
+
+%\input{kapitel/keywords}
+
+%\newpage % ← Remove this for an accepted paper.
+
+\input{kapitel/kap1_hinfuehrung_problemstellung}
+
+\input{kapitel/kap2_konzept}
+
+\input{kapitel/kap3_prototyp}
+
+\input{kapitel/kap4_businesscase}
+
+
+% Literaturliste endgueltig anzeigen
+%\bibliography{bibliographie/literatur}
+%\bibliographystyle{jurabib}
+\printbibliography
+
+\end{document}
+

@@ -1,0 +1,5 @@
+[0] Config.pm:320> INFO - This is Biber 1.9
+[0] Config.pm:323> INFO - Logfile is 'kap2_foundations.blg'
+[49] biber-MSWIN:274> INFO - === %a %b %e, %Y, %H:%M:%S
+[154] Utils.pm:160> ERROR - Cannot find control file 'kap2_foundations.bcf'! - did you pass the "backend=biber" option to BibLaTeX?
+[154] Biber.pm:110> INFO - ERRORS: 1

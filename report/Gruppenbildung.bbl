@@ -1,0 +1,220 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.4 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist{nyt}{nyt}
+    \entry{bierhoff_handbuch_2006}{book}{}
+      \name{labelname}{2}{}{%
+        {{uniquename=0,hash=ce712453732a3b5f17540fb2fecc8d69}{Bierhoff}{B\bibinitperiod}{Hans\bibnamedelima W.}{H\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=7c4388fc9ab72f10aeb4d9c25a8fd94e}{Frey}{F\bibinitperiod}{Dieter}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{uniquename=0,hash=ce712453732a3b5f17540fb2fecc8d69}{Bierhoff}{B\bibinitperiod}{Hans\bibnamedelima W.}{H\bibinitperiod\bibinitdelim W\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=7c4388fc9ab72f10aeb4d9c25a8fd94e}{Frey}{F\bibinitperiod}{Dieter}{D\bibinitperiod}{}{}{}{}}%
+      }
+      \list{location}{1}{%
+        {Göttingen}%
+      }
+      \strng{namehash}{1ee9fc0734160f1931ab8594e39ed4ca}
+      \strng{fullhash}{1ee9fc0734160f1931ab8594e39ed4ca}
+      \field{sortinit}{B}
+      \field{sortinithash}{1a3a21dbed09540af12d49a0b14f4751}
+      \field{labelyear}{2006}
+      \field{labelmonth}{06}
+      \field{datelabelsource}{}
+      \field{labeltitle}{Handbuch der {Psychologie} / {Handbuch} der {Sozialpsychologie} und {Kommunikationspsychologie}}
+      \field{edition}{1., Aufl.}
+      \field{isbn}{9783801718442}
+      \field{month}{06}
+      \field{title}{Handbuch der {Psychologie} / {Handbuch} der {Sozialpsychologie} und {Kommunikationspsychologie}}
+      \field{year}{2006}
+    \endentry
+    \entry{brettel_erfolgreiche_2009}{book}{}
+      \name{labelname}{6}{}{%
+        {{uniquename=0,hash=3edc8777540343d8b32648b5764322f0}{Brettel}{B\bibinitperiod}{Malte}{M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=1db0437dda67758e9685e598a913cd0b}{Heinemann}{H\bibinitperiod}{Florian}{F\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=5e106c866902d528c59d1e65780b2470}{Sander}{S\bibinitperiod}{Thies}{T\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=3c8e796a05bb1c44c53a93e32ebba603}{Spieker}{S\bibinitperiod}{Marc}{M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=fa2194ece76343773b1a6fda43d8a8f6}{Strigel}{S\bibinitperiod}{Marc}{M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=73a2ded15698ffcb07c897c85c5ba5e9}{Weiß}{W\bibinitperiod}{Kathrin}{K\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{6}{}{%
+        {{uniquename=0,hash=3edc8777540343d8b32648b5764322f0}{Brettel}{B\bibinitperiod}{Malte}{M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=1db0437dda67758e9685e598a913cd0b}{Heinemann}{H\bibinitperiod}{Florian}{F\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=5e106c866902d528c59d1e65780b2470}{Sander}{S\bibinitperiod}{Thies}{T\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=3c8e796a05bb1c44c53a93e32ebba603}{Spieker}{S\bibinitperiod}{Marc}{M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=fa2194ece76343773b1a6fda43d8a8f6}{Strigel}{S\bibinitperiod}{Marc}{M\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=73a2ded15698ffcb07c897c85c5ba5e9}{Weiß}{W\bibinitperiod}{Kathrin}{K\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{d73b1e4c6f23ec212e6d2b14b7aa0fcc}
+      \strng{fullhash}{fdeb18f26d9e8254e0f586cc3edcfcba}
+      \field{sortinit}{B}
+      \field{sortinithash}{1a3a21dbed09540af12d49a0b14f4751}
+      \field{labelyear}{2009}
+      \field{datelabelsource}{}
+      \field{labeltitle}{Erfolgreiche Unternehmerteams}
+      \field{isbn}{3-8349-0302-7}
+      \field{title}{Erfolgreiche Unternehmerteams}
+      \field{year}{2009}
+    \endentry
+    \entry{dick_teamwork_2013}{book}{}
+      \name{labelname}{2}{}{%
+        {{uniquename=0,hash=2df20662cbffa56163661bb00defd688}{Dick}{D\bibinitperiod}{Rolf\bibnamedelima van}{R\bibinitperiod\bibinitdelim v\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=4c798d7a349616ce2f02a5b1e22fd587}{{Michael\bibnamedelimb A.\bibnamedelimi West}}{M\bibinitperiod}{}{}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{uniquename=0,hash=2df20662cbffa56163661bb00defd688}{Dick}{D\bibinitperiod}{Rolf\bibnamedelima van}{R\bibinitperiod\bibinitdelim v\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=4c798d7a349616ce2f02a5b1e22fd587}{{Michael\bibnamedelimb A.\bibnamedelimi West}}{M\bibinitperiod}{}{}{}{}{}{}}%
+      }
+      \list{language}{1}{%
+        {ger}%
+      }
+      \list{location}{1}{%
+        {Göttingen}%
+      }
+      \list{publisher}{1}{%
+        {Hogrefe}%
+      }
+      \strng{namehash}{f350e1db4151786075146a7bea9d60ae}
+      \strng{fullhash}{f350e1db4151786075146a7bea9d60ae}
+      \field{sortinit}{D}
+      \field{sortinithash}{a01c54d1737685bc6dbf0ea0673fa44c}
+      \field{labelyear}{2013}
+      \field{datelabelsource}{}
+      \field{labeltitle}{Teamwork, {Teamdiagnose}, {Teamentwicklung}}
+      \field{edition}{2., überarb. u. erw. Aufl.}
+      \field{isbn}{9783840924811}
+      \field{series}{Praxis der {Personalpsychologie}}
+      \field{title}{Teamwork, {Teamdiagnose}, {Teamentwicklung}}
+      \field{volume}{Band 8, Ed. 2}
+      \field{year}{2013}
+      \keyw{Betriebliche Gruppenarbeit,Betriebliches Personalwesen,Betrieb Personalpolitik,Betrieb Personalwesen,Gruppe Dynamik,Gruppenarbeit Betrieb,Gruppendynamik,Gruppenprozess,Online-Publikation,Personalarbeit,Personalmanagement,Personalpolitik,Personalpsychologie,Personal Psychologie,Personalwesen,Personalwirtschaft,Personalwirtschaftslehre Personalpolitik,Personalwirtschaftslehre Personalwesen,Teamarbeit,Teamentwicklung,Teamwork,Unternehmen Personalpolitik,Unternehmen Personalwesen,Unternehmen Teamentwicklung}
+    \endentry
+    \entry{magic_quadrant}{misc}{}
+      \name{labelname}{1}{}{%
+        {{uniquename=0,hash=9bbd1070a29b9e9801ce3bb65793b276}{Group}{G\bibinitperiod}{Gartner}{G\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=9bbd1070a29b9e9801ce3bb65793b276}{Group}{G\bibinitperiod}{Gartner}{G\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{9bbd1070a29b9e9801ce3bb65793b276}
+      \strng{fullhash}{9bbd1070a29b9e9801ce3bb65793b276}
+      \field{sortinit}{G}
+      \field{sortinithash}{480ee01f9ffd559b3258d822f54a8ac2}
+      \field{labelyear}{2015}
+      \field{labelmonth}{05}
+      \field{labelday}{25}
+      \field{datelabelsource}{url}
+      \field{labeltitle}{Gartner Magic Quadrant}
+      \field{title}{Gartner Magic Quadrant}
+      \field{urlday}{25}
+      \field{urlmonth}{05}
+      \field{urlyear}{2015}
+      \verb{url}
+      \verb http://www.gartner.com/technology/research/methodologies/research_mq.jsp
+      \endverb
+    \endentry
+    \entry{gruppen-bildung}{misc}{}
+      \name{labelname}{2}{}{%
+        {{uniquename=0,hash=1d8b6f72a940c316f88d1c84462e54f7}{Muuß-Merholz}{M\bibinithyphendelim M\bibinitperiod}{Jöran}{J\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=4706d2afe85ea8725d0dc9c4fddde93a}{Andrasch}{A\bibinitperiod}{Matthias}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{uniquename=0,hash=1d8b6f72a940c316f88d1c84462e54f7}{Muuß-Merholz}{M\bibinithyphendelim M\bibinitperiod}{Jöran}{J\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=4706d2afe85ea8725d0dc9c4fddde93a}{Andrasch}{A\bibinitperiod}{Matthias}{M\bibinitperiod}{}{}{}{}}%
+      }
+      \strng{namehash}{ab36518484fa57c87982535adbc320ef}
+      \strng{fullhash}{ab36518484fa57c87982535adbc320ef}
+      \field{sortinit}{M}
+      \field{sortinithash}{4203d16473bc940d4ac780773cb7c5dd}
+      \field{labelyear}{2015}
+      \field{labelmonth}{05}
+      \field{labelday}{25}
+      \field{datelabelsource}{url}
+      \field{labeltitle}{Gruppen-{Bildung} – {Facebook}-{Gruppen}, {WhatsApp} und {Co}. zum {Lernen} nutzen{|} {Web} 2.0 in der politischen {Bildung}}
+      \field{abstract}{Vergleich verschiedener Gruppen-Funktionen bei Facebook, Google+, BuddyPress, Threema, WhatsApp und anderen. Dazu: Ideen für den Einsatz in der Bildung}
+      \field{title}{Gruppen-{Bildung} – {Facebook}-{Gruppen}, {WhatsApp} und {Co}. zum {Lernen} nutzen{|} {Web} 2.0 in der politischen {Bildung}}
+      \field{urlday}{25}
+      \field{urlmonth}{05}
+      \field{urlyear}{2015}
+      \verb{url}
+      \verb http://pb21.de/2014/07/gruppen-bildung-facebook-gruppen-whatsapp-und-co-zum-lernen-nutzen/
+      \endverb
+    \endentry
+    \entry{spies_organisationspsychologie_2010}{book}{}
+      \name{labelname}{2}{}{%
+        {{uniquename=0,hash=159b23a1832651d40f63c3d9eb2f869d}{Spieß}{S\bibinitperiod}{Erika}{E\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=0b7111ee0f1b2adec1f56fefd014a12b}{Rosenstiel}{R\bibinitperiod}{Lutz\bibnamedelima von}{L\bibinitperiod\bibinitdelim v\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{2}{}{%
+        {{uniquename=0,hash=159b23a1832651d40f63c3d9eb2f869d}{Spieß}{S\bibinitperiod}{Erika}{E\bibinitperiod}{}{}{}{}}%
+        {{uniquename=0,hash=0b7111ee0f1b2adec1f56fefd014a12b}{Rosenstiel}{R\bibinitperiod}{Lutz\bibnamedelima von}{L\bibinitperiod\bibinitdelim v\bibinitperiod}{}{}{}{}}%
+      }
+      \list{language}{1}{%
+        {de}%
+      }
+      \list{publisher}{1}{%
+        {Oldenbourg Verlag}%
+      }
+      \strng{namehash}{f8bb0254ec948a94c2b83dec7428cf6f}
+      \strng{fullhash}{f8bb0254ec948a94c2b83dec7428cf6f}
+      \field{sortinit}{S}
+      \field{sortinithash}{4125bb4c3a0eb3eaee3ea6da32eb70c8}
+      \field{labelyear}{2010}
+      \field{labelmonth}{04}
+      \field{datelabelsource}{}
+      \field{labeltitle}{Organisationspsychologie}
+      \field{abstract}{Die verschiedenen Facetten des Erlebens und Verhaltens in Organisationen werden in diesem Buch anhand organisationspsychologischen Basiswissens und psychologisch relevanter Konzepte vorgestellt. In exemplarischen Anwendungsfeldern wie Fuhrung, Personalauswahl, Gruppen- und Teamarbeit, Unternehmenszusammenschlussen, Unternehmenskultur, Beratung, Work-Life Balance, Karriereplanung, interkulturelles Handeln, Organisations- und Personalentwicklung sowie Gesundheit in Organisationen wird das organisationspsychologische Wissen verdeutlicht und diskutiert."}
+      \field{isbn}{9783486583397}
+      \field{month}{04}
+      \field{shorttitle}{Organisationspsychologie}
+      \field{title}{Organisationspsychologie: {Basiswissen}, {Konzepte} und {Anwendungsfelder}}
+      \field{year}{2010}
+      \keyw{Social Science / General}
+    \endentry
+    \entry{thomas_grundris_1991}{book}{}
+      \name{labelname}{1}{}{%
+        {{uniquename=0,hash=538e6350e0fb0a5c1085faca02bd6a8d}{Thomas}{T\bibinitperiod}{Alexander}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=538e6350e0fb0a5c1085faca02bd6a8d}{Thomas}{T\bibinitperiod}{Alexander}{A\bibinitperiod}{}{}{}{}}%
+      }
+      \list{language}{1}{%
+        {Deutsch}%
+      }
+      \list{publisher}{1}{%
+        {Hogrefe Verlag}%
+      }
+      \strng{namehash}{538e6350e0fb0a5c1085faca02bd6a8d}
+      \strng{fullhash}{538e6350e0fb0a5c1085faca02bd6a8d}
+      \field{sortinit}{T}
+      \field{sortinithash}{9378dd666f3c24d81538df53aa99e23d}
+      \field{labelyear}{1991}
+      \field{labelmonth}{11}
+      \field{datelabelsource}{}
+      \field{labeltitle}{Grundriß der {Sozialpsychologie}, in 2 {Bdn}., {Bd}.2, {Individuum}, {Gruppe}, {Gesellschaft}}
+      \field{month}{11}
+      \field{shorttitle}{Grundriß der {Sozialpsychologie}, in 2 {Bdn}., {Bd}.2, {Individuum}, {Gruppe}, {Gesellschaft}}
+      \field{title}{Grundriß der {Sozialpsychologie}, in 2 {Bdn}., {Bd}.2, {Individuum}, {Gruppe}, {Gesellschaft}: {BD} 2}
+      \field{year}{1991}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+

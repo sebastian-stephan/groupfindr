@@ -1,0 +1,160 @@
+\ProvidesPackage{ecis2015}[2014/06/04 v1.0 ECIS 2015 Proceedings Template]
+\RequirePackage[ngerman]{babel}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+%\RequirePackage[american]{babel}
+\RequirePackage{csquotes}
+\RequirePackage{mathptmx}
+\RequirePackage{helvet}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage{float}
+\RequirePackage{bigstrut}
+\RequirePackage{enumitem}
+\RequirePackage[
+backend=biber,
+style=authoryear-comp,natbib=true,maxbibnames=99,firstinits=true]{biblatex}
+\usetikzlibrary{shapes,arrows}
+\RequirePackage[protrusion,expansion]{microtype}
+\RequirePackage[pdftex,pdfborder={0 0 0}]{hyperref}
+
+\setstocksize{297mm}{210mm}
+\settrimmedsize{297mm}{210mm}{*}
+\settypeblocksize{237mm}{160mm}{*}
+\setlrmargins{30mm}{*}{*}
+\setulmargins{30mm}{*}{*}
+\setlength{\headsep}{13mm}
+\setlength{\footskip}{14mm}
+\checkandfixthelayout
+
+\frenchspacing
+\flushbottom
+\setlength{\parindent}{0pt}
+\footmarkstyle{\textsuperscript{#1}\kern.4em}
+\setlength{\footmarkwidth}{0pt}
+\setlength{\footmarksep}{-\footmarkwidth}
+
+\makepagestyle{ecis}
+\makeoddhead{ecis}{\itshape\footnotesize\ECISshortauthors{}\,/\,\ECISshorttitle}{}{}
+\makeevenhead{ecis}{\itshape\footnotesize\ECISshortauthors{}\,/\,\ECISshorttitle}{}{}
+\makeoddfoot{ecis}{\itshape\footnotesize Vorlesung Web 2.0, University of Zurich, FS2015}{}{\thepage}
+\makeevenfoot{ecis}{\itshape\footnotesize Vorlesung Web 2.0, University of Zurich, FS2015}{}{\thepage}
+
+\makepagestyle{ecistitle}
+\copypagestyle{ecistitle}{ecis}
+\makeoddhead{ecistitle}{}{}{}
+\makeevenhead{ecistitle}{}{}{}
+
+\renewcommand*{\chaptitlefont}{\fontsize{14}{14}\selectfont\bfseries\sffamily}
+\renewcommand*{\chapnumfont}{\chaptitlefont}
+
+\setcounter{secnumdepth}{3}
+\setsecheadstyle{\fontsize{12}{12}\selectfont\bfseries\sffamily}
+\setsubsecheadstyle{\fontsize{11}{11}\sffamily}
+
+\newcommand{\ECISmaintitle}{}
+\newcommand{\ECISshorttitle}{}
+\newcommand{\ECIScategory}{}
+\newcommand{\ECISauthors}{}
+\newcommand{\ECISshortauthors}{}
+\newcommand{\maintitle}[1]{\renewcommand{\ECISmaintitle}{#1}}
+\newcommand{\shorttitle}[1]{\renewcommand{\ECISshorttitle}{#1}}
+\newcommand{\category}[1]{\renewcommand{\ECIScategory}{#1}}
+\newcommand{\authors}[1]{\renewcommand{\ECISauthors}{#1}}
+\newcommand{\shortauthors}[1]{\renewcommand{\ECISshortauthors}{#1}}
+\newcommand{\ECIStitle}{%
+  \begin{center}
+    {\fontsize{17}{21}\selectfont\bfseries\MakeUppercase{\textls[25]{\ECISmaintitle}}\par}\vspace{1.5\baselineskip}%
+    {\itshape\ECIScategory}
+  \end{center}
+  \vspace{1\baselineskip}%
+  \begin{hangparas}{1em}{1}\parskip=.5\baselineskip\fontsize{12}{12}\selectfont\ECISauthors\end{hangparas}\par
+  \vspace{2\baselineskip}  
+}
+\renewcommand{\abstractnamefont}{\fontsize{14}{14}\selectfont\bfseries\sffamily}
+\renewcommand{\abstracttextfont}{\itshape}
+\renewcommand{\absnamepos}{flushleft}
+\setlength{\absleftindent}{0pt}
+\setlength{\absrightindent}{0pt}
+\setlength{\absparindent}{0pt}
+
+\newenvironment{keywords}{\vspace{.5\baselineskip}\itshape\noindent Keywords:\space }{\par\vspace{\baselineskip}}
+\newenvironment{references}{\begin{hangparas}{\bibhang}{1}}{\end{hangparas}}
+
+\hangcaption
+\captiondelim{.\quad}
+\captionstyle[\raggedright]{\raggedright}
+\captionnamefont{\itshape}
+\captiontitlefont{\itshape}
+
+\newcommand{\ECISfigureexample}{%
+  \begin{tikzpicture}[thick,ellipse,text width=2.5cm,text centered,>=stealth']
+    \path (0,0) node[draw] (a) {independent\\variable} 
+     --   (6,0) node[draw] (b) {dependent\\variable};
+    \draw[->] (a) -- (b);
+  \end{tikzpicture}
+}
+
+\firmlists
+\setlist[itemize]{leftmargin=1.5em,labelwidth=0em,labelsep=.5em,itemindent=0pt}
+\setlist[itemize,2]{leftmargin=1.2em,labelwidth=0em,labelsep=.5em,itemindent=0pt}
+\setlist[enumerate]{leftmargin=1.5em,labelwidth=0em,labelsep=.3em,itemindent=0pt}
+\setlist[enumerate,2]{leftmargin=1.2em,labelwidth=0em,labelsep=.3em,itemindent=0pt}
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit*{\addnbthinspace}%
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{bytranslator+others}%
+  \newunit\newblock
+  \printfield{version}%
+  \newunit\newblock
+  \usebibmacro{journal+issuetitle}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  \newunit
+  \usebibmacro{note+pages}%
+  \setunit{\addspace}% 
+  \usebibmacro{issue+date}% 
+  \setunit{\addcolon\space}% 
+  \usebibmacro{issue}% 
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{issn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+\DeclareFieldFormat[article]{pages}{#1}
+
+%\DefineBibliographyStrings{english}{edition = {Edition}}
+\DefineBibliographyStrings{german}{edition = {Edition}}
+
+\setlength{\bibhang}{1.5em}
+\defbibheading{bibliography}[Literaturverzeichnis]{\chapter*{#1}}
+
+\AtBeginDocument{\ECIStitle\pagestyle{ecis}\thispagestyle{ecistitle}}
+\usepackage{hyperref}
+
