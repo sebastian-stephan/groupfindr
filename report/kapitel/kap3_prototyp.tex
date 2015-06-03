@@ -22,19 +22,19 @@ socket.on('updatepos', function (pos) {
 
 Eine Herausforderung mit Echzeitkommunikation dieser Art ist die Sicherstellung einer konsistenten Sicht über alle verbundenen Benutzer. Durch die häufigen parallelen Updates können leicht Logikfehler im Event-Handling entstehen, die beispielsweise dazu führten, dass einzelne Benutzer dupliziert wurden. Des Weiteren hat die Terminologie von Räumen (\emph{rooms}) für etwas Verwirrung gesorgt, da dieser Begriff sowohl in der technischen (als socket.io Namensraum) als auch in der konzeptionellen (als virtuellen Raum in dem sich Gruppen bilden) Domäne existiert.
 \newline\newline
-Die in CreateJS enthaltene Javascript Bibliothek EaselJS verwenden wir zur dynamischen Darstellung des Raum Canvas und insbesondere zur Animation des beweglichen Benutzer-Avatars. Dafür bietet EaselJS\footnote{\url{http://www.createjs.com/easeljs}} einen eleganten Weg über sogennante SpriteSheets wie Abbildung~\ref{create_sprite} illustriert. Abbildung~\ref{create_sprite} zeigt wie diese einzelne Bilder oder eine Abfolge von Bildern für Bewegungen in bestimmte Richtungen mit einer konfigurierbaren Geschwindigkeit (\code{0.4}) konfiguriert werden können. Eine nennenswerte Herausforderung war die korrekte relative Berechnung der Positionskoordinaten beim skalieren des Raum Canvas.
+Die in CreateJS enthaltene Javascript Bibliothek EaselJS verwenden wir zur dynamischen Darstellung des Raum Canvas und insbesondere zur Animation des beweglichen Benutzer-Avatars. Dafür bietet EaselJS\footnote{\url{http://www.createjs.com/easeljs}} einen eleganten Weg über sogennante SpriteSheets wie Abbildung~\ref{fig:spritesheet} illustriert. Listing~\ref{lst:spritesheet} zeigt wie diese einzelne Bilder oder eine Abfolge von Bildern für Bewegungen in bestimmte Richtungen mit einer konfigurierbaren Geschwindigkeit (\code{0.4}) konfiguriert werden können. Eine nennenswerte Herausforderung war die korrekte relative Berechnung der Positionskoordinaten beim skalieren des Raum Canvas.
 
 \begin{figure}[htbp]
-\begin{tabular}{p{0.5\textwidth}p{0.5\textwidth}}
+\begin{tabular}{p{0.45\textwidth}p{0.5\textwidth}}
     \begin{minipage}{.5\textwidth}
     \centering
-    \includegraphics[width=0.5\linewidth]{graphiken/player.png}
+    \includegraphics[width=0.45\linewidth]{graphiken/player.png}
     \caption{Avatar SpriteSheet}
     \label{fig:spritesheet}
     \end{minipage}
     &
     \begin{minipage}{.5\textwidth}
-\begin{lstlisting}[caption=EaselJS Avatar Animationen]
+\begin{lstlisting}[caption=EaselJS Avatar Animationen,label=lst:spritesheet]
 createjs.SpriteSheet({
   "images": [image],
   frames: {width: 64, height: 100, regX: 32, regY: 50, count: 16},
@@ -65,18 +65,21 @@ Das Senden der Chatnachricht \code{<script>window.location = "https://google.com
 
 Auf der Startseite der Groupfindr Web Applikation\footnote{\url{https://groupfindr.herokuapp.com/}} kann der Benutzer Benutzername und Raum auswählen (siehe Abbildung \ref{groupfindr_einstieg-gruppenerstellung}). Existierende Räume werden ihm dabei als Dropdown-Auswahl zur Verfügung gestellt. Sobald ein Benutzer einen virtuellen Raum (dargestellt als rechteckige begehbare Fläche) betritt, erhält er einen Avatar zugewiesen (siehe Abbildung \ref{groupfindr_einstieg-gruppenerstellung}). Im virtuellen Raum kann der Benutzer seinen Avatar über Pfeiltasten, per Maus, oder Touch-freundlich per Drag’n’Drop bewegen. Dabei kann jeder Benutzer die Laufwege aller Benutzer im gleichen Raum in Echtzeit mitverfolgen.
 
-\begin{figure}[h]
+\begin{figure}
 \centering
-\includegraphics{graphiken/groupfindr_einstieg-gruppenerstellung.png}
+\begin{tabular}{cc}
+\subfloat[Login Screen]{\includegraphics[width=0.3\linewidth]{graphiken/login.png}} & 
+\multirow{-7}[9.3]{*}{\subfloat[Raum Beigetreten]{\includegraphics[width=0.6\linewidth]{graphiken/joined-canvas.png}}} \\
+\subfloat[Gruppe Erstellen]{\includegraphics[width=0.3\linewidth]{graphiken/create-group.png}} &
+\end{tabular}
 \caption{Groupfindr - Einstieg \& Gruppenerstellung (Quelle: Eigene Darstellung)}
 \label{groupfindr_einstieg-gruppenerstellung}
 \end{figure}
 
-
 \begin{figure}[h]
 \centering
-\includegraphics{graphiken/groupfindr_einfaerbung-chat.png}
-\caption{Groupfindr - Einfärbung der Gruppen (Quelle: Eigene Darstellung)}
+\includegraphics[width=\linewidth]{graphiken/groups-and-chat.png}
+\caption{Groupfindr - Einfärbung der Gruppen und Chatbox (Quelle: Eigene Darstellung)}
 \label{groupfindr_einfaerbung-chat}
 \end{figure}
 
