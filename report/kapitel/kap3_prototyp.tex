@@ -61,7 +61,7 @@ Die ausklappbare Chatbox am unteren Bildrand (siehe Abbildung~\ref{groupfindr_ei
 \section{How To}
 \label{how_to}
 
-Auf der Startseite der \emph{groupfindr} Webanwendung\footnote{\url{https://groupfindr.herokuapp.com/}} kann der Benutzer Benutzername und Raum auswählen (siehe Abbildung~\ref{fig:login_screen}). Existierende Räume werden ihm dabei als Dropdown-Auswahl zur Verfügung gestellt. Sobald ein Benutzer einen virtuellen Raum (dargestellt als rechteckige begehbare Fläche) betritt, erhält er einen Avatar zugewiesen (siehe Abbildung~\ref{fig:room_joined}). Im virtuellen Raum kann der Benutzer seinen Avatar über Pfeiltasten, per Maus, oder touchfreundlich per Drag’n’Drop bewegen. Dabei kann jeder Benutzer die Laufwege aller Benutzer im gleichen Raum in Echtzeit mitverfolgen.
+Auf der Startseite der \emph{groupfindr} Webanwendung\footnote{\url{https://groupfindr.herokuapp.com/}} kann der Benutzer Benutzername und Raum auswählen (siehe Abbildung~\ref{fig:login_screen}). Existierende Räume werden ihm dabei als Dropdown-Auswahl zur Verfügung gestellt. Sobald ein Benutzer einen virtuellen Raum (dargestellt als rechteckige begehbare Fläche) betritt, erhält er einen Avatar zugewiesen (siehe Abbildung~\ref{fig:room_joined}).
 
 \begin{figure}
 \centering
@@ -74,11 +74,13 @@ Auf der Startseite der \emph{groupfindr} Webanwendung\footnote{\url{https://grou
 \label{groupfindr_einstieg-gruppenerstellung}
 \end{figure}
 
-\begin{figure}[h]
-\centering
+Im virtuellen Raum kann der Benutzer seinen Avatar über Pfeiltasten, per Maus, oder touchfreundlich per Drag’n’Drop bewegen. Dabei kann jeder Benutzer die Laufwege aller Benutzer im gleichen Raum in Echtzeit mitverfolgen. Solange noch freie Plätze auf dem Canvas bestehen (in diesem Prototyp aus Darstellungsgründen auf 7 begrenzt), kann jeder Benutzer über den blauen Gruppenbutton im Canvas eine neue Gruppe mit Namen und Beschreibung erstellen. Jeder Benutzer kann einer Gruppe betreten indem er seinen Avatar in das Feld der Gruppe seiner Wahl bewegt (siehe Abbildung~\ref{groupfindr_einfaerbung-chat}).
+
+\begin{figure}
 \includegraphics[width=\linewidth]{graphiken/groups-and-chat.png}
-\caption{\emph{groupfindr} - Einfärbung der Gruppen und Chatbox (Quelle: Eigene Darstellung)}
+\caption{\emph{groupfindr} - Gruppen und Chatbox (Quelle: Eigene Darstellung)}
 \label{groupfindr_einfaerbung-chat}
 \end{figure}
 
-Solange noch freie Plätze auf dem Canvas bestehen (in diesem Prototyp aus Darstellungsgründen auf 7 begrenzt), kann jeder Benutzer über den blauen Gruppenbutton im Canvas eine neue Gruppe mit Namen und Beschreibung erstellen (siehe Abbildung~\ref{fig:group_create}). Jeder Benutzer kann einer Gruppe betreten indem er seinen Avatar in das Feld der Gruppe seiner Wahl bewegt (siehe Abbildung~\ref{groupfindr_einfaerbung-chat}). Gruppen mit optimaler Mitgliederanzahl (4-6) werden dabei grün eingefärbt, solche mit zu vielen Mitgliedern sind an der roten Einfärbung schnell zu erkennen. Jeder Benutzer kann leere Gruppen wieder löschen um Platz für weitere Gruppen zu schaffen. Die aktuellen Gruppeneinteilungen sind jederzeit in einer textuellen Übersicht, links neben dem Canvas einsehbar. Diese Übersicht lässt sich am Ende des Gruppenfindungsprozesses über die Exportfunktion (\emph{Export groups}) als PDF herunterladen.
+Gruppen mit optimaler Mitgliederanzahl (4-6) werden dabei grün eingefärbt, solche mit zu vielen Mitgliedern sind an der roten Einfärbung schnell zu erkennen.
+Jeder Benutzer kann leere Gruppen wieder löschen um Platz für weitere Gruppen zu schaffen. Die aktuellen Gruppeneinteilungen sind jederzeit in einer textuellen Übersicht, links neben dem Canvas einsehbar. Diese Übersicht lässt sich am Ende des Gruppenfindungsprozesses über die Exportfunktion (\emph{Export groups}) als PDF herunterladen.

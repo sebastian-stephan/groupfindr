@@ -62,12 +62,12 @@ style=authoryear-comp,natbib=true,maxbibnames=99,firstinits=true]{biblatex}
 \newcommand{\category}[1]{\renewcommand{\ECIScategory}{#1}}
 \newcommand{\authors}[1]{\renewcommand{\ECISauthors}{#1}}
 \newcommand{\shortauthors}[1]{\renewcommand{\ECISshortauthors}{#1}}
-\newcommand{\ECIStitle}{%
+\newcommand{\ECIStitle}{
   \begin{center}
-    {\fontsize{17}{21}\selectfont\bfseries\MakeUppercase{\textls[25]{\ECISmaintitle}}\par}\vspace{1.5\baselineskip}%
-    {\itshape\ECIScategory}
+    {\fontsize{17}{21}\selectfont\bfseries\MakeUppercase{\textls[25]{\ECISmaintitle}}\par}\vspace{0.1\baselineskip}
+    {\ECIScategory}
   \end{center}
-  \vspace{1\baselineskip}%
+  \vspace{0.1\baselineskip}
   \begin{hangparas}{1em}{1}\parskip=.5\baselineskip\fontsize{12}{12}\selectfont\ECISauthors\end{hangparas}\par
   \vspace{2\baselineskip}  
 }
