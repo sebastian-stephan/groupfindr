@@ -7,6 +7,23 @@ $(function () {
   // Set up stage (canvas)
   var stage = new createjs.Stage('mycanvas');
 
+  // Draw floor
+  var x = 300;
+  var y = 150;
+  var rows = 10;
+  var xoff = 500;
+  var yoff = -160;
+  for (i = 0; i < rows; i++) {
+    for (j = 0; j < rows; j++) {
+      bmp = new createjs.Bitmap('images/floor2.png');
+      bmp.x = xoff + (j-i) * x;
+      bmp.y = yoff + (i+j) * y;
+      bmp.regX = x;
+      bmp.regY = y;
+      stage.addChild(bmp);
+    }
+  }
+
   var groupsContainer = new createjs.Container();        // Bottom layer: Group rectangles
   var otherPlayersContainer = new createjs.Container();  // Second layer: Other player shapes
   var playerContainer = new createjs.Container();       // Top layer: Own player shape
@@ -14,7 +31,6 @@ $(function () {
   stage.addChild(groupsContainer);
   stage.addChild(otherPlayersContainer);
   stage.addChild(playerContainer);
-
 
   var update = true;  // Whenever we set this to true, in the next tick
                       // the stage will be updated. This way we only update
@@ -105,8 +121,8 @@ $(function () {
     var container = new createjs.Container();
     var text = new createjs.Text(this.username, "30px VT323", 'black');
     text.textAlign = 'center';
+    text.y = text.y - 60;
     var playershape = new createjs.Sprite(sprite, "standdown");
-    playershape.y = container.y + 70;
     container.addChild(text);
     container.addChild(playershape);
     this.shape = container;
@@ -230,15 +246,20 @@ $(function () {
       switch (event.keyCode) {
         case 37:
           that.moveTo(that.getPos().x - step, that.getPos().y);
+          event.preventDefault();
           break;
         case 38:
           that.moveTo(that.getPos().x, that.getPos().y - step);
+          event.preventDefault();
           break;
         case 39:
           that.moveTo(that.getPos().x + step, that.getPos().y);
+          event.preventDefault();
           break;
         case 40:
           that.moveTo(that.getPos().x, that.getPos().y + step);
+          event.preventDefault();
+          break;
       }
     });
 
@@ -278,6 +299,13 @@ $(function () {
       players[newPos.id].moveTo(newPos.x, newPos.y);
     } else {
       players[newPos.id] = new Player(newPos.id, newPos.x, newPos.y, newPos.username, newPos.room, playerSpriteSheet);
+
+      // Add Player to default
+      $('#default').append($('<li>', {
+        id: newPos.id,
+        text: newPos.username
+      }));
+
       announceArrival(newPos.username);
     }
 
@@ -293,6 +321,7 @@ $(function () {
     // add ugly grey rectangle
     var rect = new createjs.Shape();
     drawRectangle(rect, 'grey', group.groupPos);
+    rect.alpha = 0.5;
 
     // add group name
     var text = new createjs.Text(shownName, "40px VT323", 'white');
@@ -315,9 +344,6 @@ $(function () {
     var title = $('<p>', {
       text: 'Group: ' + group.name
     });
-    var pmembers = $('<p>', {
-      text: 'Members: '
-    });
     var desc = $('<p>', {
       class: 'text-muted',
       text: group.description
@@ -335,7 +361,6 @@ $(function () {
     list.append(title);
     list.append(desc);
     list.append($('<hr>', {class: 'group-hr'}));
-    list.append(pmembers);
     list.append($('<ol>', {
       class: 'group-members',
       id: groupname
@@ -356,6 +381,11 @@ $(function () {
 
     //announce on the chat that the player has joined the group
     announceJoinGroup(info.username,groupname)
+
+    // Remove username from all groups
+    while ($('#' + info.id).length > 0 ) {
+      $('#' + info.id).remove();
+    }
 
     if (info.addDefault && $('#'+info.id).length==0) {
       $('#' + info.name).append($('<li>', {
@@ -395,8 +425,11 @@ $(function () {
     //announce on the chat that the player has left the group
     announceLeaveGroup(info.username,groupname)
 
-    // Remove username from group
-    $('ol#' + groupname).find('#' + info.id).remove();
+    // Remove username from all groups
+    while ($('#' + info.id).length > 0 ) {
+      $('#' + info.id).remove();
+    }
+
 
     // Add Player to default
     $('#default').append($('<li>', {
@@ -617,4 +650,5 @@ $(function () {
   $('#createGroupModal').on('shown.bs.modal', function(){
     $('#groupName').focus();
   });
+
 });

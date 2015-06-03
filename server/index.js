@@ -4,6 +4,12 @@ app.init = function (server) {
   var that = this;
   app.io = require('socket.io')(server);
 
+  // Helping function to pretty shorten a long string
+  String.prototype.trunc = String.prototype.trunc ||
+  function(n){
+    return this.length>n ? this.substr(0,n-3)+'...' : this;
+  };
+
 
   var canvasWidth = 1000;
   var canvasHeight = 1000;
@@ -137,6 +143,22 @@ app.init = function (server) {
       // Send information about new group to all players in room
       app.io.to(data.roomname).emit('groupcreated', newGroup);
 
+      // Join every player that stands in that space of the new group
+      for (var socketId in currentRoom) {
+        if (typeof currentRoom[socketId] != 'object') {
+          var usr = that.io.sockets.connected[socketId];
+          var x = usr.roomdata[data.roomname].x;
+          var y = usr.roomdata[data.roomname].y;
+          var potentialGroup = getGroup(currentRoom, x, y);
+          if (potentialGroup !== null) {
+            app.io.to(data.roomname).emit('joinedgroup', {id: socketId, name: potentialGroup.name, username: usr.username});
+          }
+        }
+      }
+
+
+
+
     });
     // Delete group, data includes roomname and groupname
     socket.on('deletegroup', function (data) {
@@ -167,7 +189,6 @@ app.init = function (server) {
 
     /* When a user logs in */
     socket.on('login', function (data) {
-      console.log(data);
       socket.join(data.room);
       socket.roomdata[data.room] = {x: data.x, y: data.y};
 
@@ -175,7 +196,7 @@ app.init = function (server) {
       if (!socket.adapter.rooms[data.room].groups) {
         socket.adapter.rooms[data.room].groups = {};
       }
-      socket.username = data.username;
+      socket.username = data.username.trunc(20);
 
       // Send this new player's position to everyone
       var newPos = {id: socket.id, username: socket.username, room: data.room, x: data.x, y: data.y};
@@ -283,6 +304,7 @@ app.init = function (server) {
 
       if (joinedgroup) {
         app.io.to(pos.roomname).emit('joinedgroup', {id: socket.id, name: newGroup.name, username: newPos.username});
+
       }
       if (leftgroup) {
         app.io.to(pos.roomname).emit('leftgroup', {id: socket.id, name: oldGroup.name, username: newPos.username});
